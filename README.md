@@ -31,6 +31,8 @@ Future additions.
 
 Rendered Images
 ----
+Images below are created from path tracing with diffuse interreflections. 
+
 ![alt text](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/1sample.png "")
 * 512x512
 * 1 sample per pixel
