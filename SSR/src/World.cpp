@@ -41,7 +41,7 @@ World::World()
 */
 void World::build(void){
     // Sampler
-    int numberOfSamples = 100000;
+    int numberOfSamples = 1;
     vp.sampler_ptr = new MultiJitter(numberOfSamples);
     vp.num_samples = vp.sampler_ptr->num_samples;
 
