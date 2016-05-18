@@ -24,6 +24,7 @@ Features
     * Path tracing (Global Illumination)
 + Bounding Volume Hierarchy (BVH)
     * Median split method
+    
 More To Come!
 =====
 Future additions.
