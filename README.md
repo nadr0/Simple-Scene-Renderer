@@ -22,7 +22,8 @@ Features
     * Basic (non whitted)
     * Whitted
     * Path tracing (Global Illumination)
-    
++ Bounding Volume Hierarchy (BVH)
+    * Median split method
 More To Come!
 =====
 Future additions.
@@ -54,4 +55,4 @@ Images below are created from path tracing with diffuse interreflections.
 
 * 512x512
 * 1,000 samples per pixel
-* 6.8 hours
+* 6.8 hours to render
