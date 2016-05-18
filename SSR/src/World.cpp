@@ -41,7 +41,7 @@ World::World()
 */
 void World::build(void){
     // Sampler
-    int numberOfSamples = 1;
+    int numberOfSamples = 1000;
     vp.sampler_ptr = new MultiJitter(numberOfSamples);
     vp.num_samples = vp.sampler_ptr->num_samples;
 
@@ -86,21 +86,26 @@ void World::build(void){
     // Right Sphere.
     Vec4 s2_c = Vec4(7.5,3.5,18.0);
     Sphere * s2 = new Sphere(s2_c,3.5);
-    s2->material_ptr = new Matte();
-    s2->material_ptr->set_kd(1.0);
+    s2->material_ptr = new Reflective();
+    s2->material_ptr->set_kd(0.0);
     s2->material_ptr->set_ka(0.0);
     s2->material_ptr->set_cd(white);
+    s2->material_ptr->set_ks(0.0);
+    // s2->material_ptr = new Matte();
+    // s2->material_ptr->set_kd(1.0);
+    // s2->material_ptr->set_ka(0.0);
+    // s2->material_ptr->set_cd(white);
     add_object(s2);
 
     // Left sphere.
-    Vec4 s4_c = Vec4(-7.5,3.5,12.5);
-    Sphere * s4 = new Sphere(s4_c,3.5);
-    s4->material_ptr = new Reflective();
-    s4->material_ptr->set_kd(0.0);
-    s4->material_ptr->set_ka(0.0);
-    s4->material_ptr->set_cd(white);
-    s4->material_ptr->set_ks(0.0);
-    add_object(s4);
+    // Vec4 s4_c = Vec4(-7.5,3.5,12.5);
+    // Sphere * s4 = new Sphere(s4_c,3.5);
+    // s4->material_ptr = new Reflective();
+    // s4->material_ptr->set_kd(0.0);
+    // s4->material_ptr->set_ka(0.0);
+    // s4->material_ptr->set_cd(white);
+    // s4->material_ptr->set_ks(0.0);
+    // add_object(s4);
 
     // My cornell box
 
@@ -172,12 +177,8 @@ void World::build(void){
     CEILING->material_ptr->set_cd(white);
     add_object(CEILING);
 
-
-
-
-
-    // BVH_root = new BVH(1);
-    // BVH_root->buildBVH(objects, 0);
+    BVH_root = new BVH(1);
+    BVH_root->buildBVH(objects, 0);
 
     printf(" - - World Scene Complete - - \n");
 
@@ -208,21 +209,21 @@ void World::add_light(Light * light_ptr){
 }
 
 ShadeRec World::hit_bare_bones_objects(Ray & ray){
-    // vector<GeometricObject *> tempObjs;
-    // hitBBox(ray, BVH_root, tempObjs);
+    vector<GeometricObject *> tempObjs;
+    hitBBox(ray, BVH_root, tempObjs);
     ShadeRec sr(this);
     double t;
     double tmin = std::numeric_limits<double>::max();
-    size_t num_objects = objects.size();
+    size_t num_objects = tempObjs.size();
     Vec4 normal;
     Vec4 local_hit_point;
     sr.hit_an_object = false;
 
     for (int j = 0; j < num_objects; j++) {
-       if(objects[j]->hit(ray, t, sr) && (t < tmin)){
+       if(tempObjs[j]->hit(ray, t, sr) && (t < tmin)){
             sr.hit_an_object = true;
             tmin = t;
-            sr.material_ptr = objects[j]->material_ptr;
+            sr.material_ptr = tempObjs[j]->material_ptr;
             sr.hit_point = ray.o + t * ray.d;
             normal = sr.normal;
             local_hit_point = sr.local_hit_point;

@@ -33,15 +33,17 @@ RGBColor AreaLight::L(ShadeRec & sr){
 }
 
 bool AreaLight::in_shadow(Ray & ray, ShadeRec & sr){
+    vector<GeometricObject *> tempObjs;
+    hitBBox(ray, sr.w->BVH_root, tempObjs);
 
     float t;
-    int num_objects = sr.w->objects.size();
+    int num_objects = tempObjs.size();
     Vec4 direction = (sample_point - ray.o);
     float ts = dot(direction, ray.d);
 
     for (int j = 0; j < num_objects; j++) {
 
-        if (sr.w->objects[j]->shadow_hit(ray, t) && t < ts){
+        if (tempObjs[j]->shadow_hit(ray, t) && t < ts){
             return true;
         }
 

@@ -5,6 +5,7 @@
 #include "Vec4.h"
 #include "World.h"
 #include "Utility.h"
+#include "Mesh.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
@@ -16,6 +17,19 @@ int main(){
 
     // Create World
     World world;
+
+    // Meshes
+
+   Mesh * COW = new Mesh(&world);
+   char file_name[8] = "cow.obj";
+   COW->readObject(file_name);
+   COW->SCALE = 15;
+   float minValue = -0.319838 *15;
+   COW->offset = Vec4(0.0,minValue*-1,10.0);
+   COW->color = RGBColor(0.5, 0.5, 1.0);
+   COW->trianglesToWorld();
+
+   printf("%s Mesh Completed.\n", file_name);
 
     // Build Scene
     world.build();
