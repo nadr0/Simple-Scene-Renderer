@@ -21,7 +21,7 @@ Features
 + Tracers
     * Basic (non whitted)
     * Whitted
-    * Path tracing (Global Illumination)
+    * Path tracing (Global Illumination with Monte Carlo Method)
 + Bounding Volume Hierarchy (BVH)
     * Median split method
     
