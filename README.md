@@ -27,7 +27,16 @@ Features
     
 More To Come!
 =====
-Future additions.
+- depth of field
+- non linear projections (fish eye)
+- refraction
+- instancing
+- glossy reflections
+- textures
+- ambient occlusion
+- smooth shaded triangles
+- updated .obj reader
+- scene language
 
 -----
 
