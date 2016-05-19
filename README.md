@@ -34,7 +34,7 @@ More To Come!
 - glossy reflections
 - textures
 - ambient occlusion
-- smooth shaded triangles
+- ~~smooth shaded triangles~~
 - updated .obj reader
 - scene language
 
