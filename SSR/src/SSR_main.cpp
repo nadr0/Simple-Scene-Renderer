@@ -20,16 +20,17 @@ int main(){
 
     // Meshes
 
-   Mesh * COW = new Mesh(&world);
-   char file_name[8] = "cow.obj";
-   COW->readObject(file_name);
-   COW->SCALE = 15;
-   float minValue = -0.319838 *15;
-   COW->offset = Vec4(0.0,minValue*-1,10.0);
-   COW->color = RGBColor(0.5, 0.5, 1.0);
-   COW->trianglesToWorld();
+   // Mesh * COW = new Mesh(&world);
+   // char file_name[10] = "bunny.obj";
+   // COW->readObject(file_name);
+   // COW->SCALE = 75.0;
+   // float minValue = -0.319838 *15; // COW
+   // float minValue = 0.033310 * 75; // BUNNY
+   // COW->offset = Vec4(0.0,-minValue,12.5);
+   // COW->color = RGBColor(0.5, 0.5, 1.0);
+   // COW->trianglesToWorld();
 
-   printf("%s Mesh Completed.\n", file_name);
+   // printf("%s Mesh Completed.\n", file_name);
 
     // Build Scene
     world.build();

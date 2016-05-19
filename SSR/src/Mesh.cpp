@@ -3,7 +3,9 @@
 #include "Mesh.h"
 #include "Phong.h"
 #include "Matte.h"
+#include "RGBColor.h"
 #include "Triangle.h"
+#include "Reflective.h"
 
 Mesh::Mesh(){
     this->wptr = nullptr;
@@ -45,10 +47,15 @@ void Mesh::trianglesToWorld(){
         n = normalize(n);
 
         Triangle * myTriangle = new Triangle(V0, V1, V2,n);
-        myTriangle->material_ptr = new Matte();
-        myTriangle->material_ptr->set_kd(1.0);
+        myTriangle->material_ptr = new Reflective();
+        myTriangle->material_ptr->set_kd(0.0);
         myTriangle->material_ptr->set_ka(0.0);
-        myTriangle->material_ptr->set_cd(this->color);
+        myTriangle->material_ptr->set_cd(RGBColor(0.0,0.0,0.0));
+        myTriangle->material_ptr->set_ks(0.0);
+        // myTriangle->material_ptr = new Matte();
+        // myTriangle->material_ptr->set_kd(1.0);
+        // myTriangle->material_ptr->set_ka(0.0);
+        // myTriangle->material_ptr->set_cd(this->color);
 
         this->wptr->add_object(myTriangle);
     }
@@ -149,5 +156,6 @@ void Mesh::readObject(char * file_name){
         }
 
     }
+    // printf("%f\n", minVALUE);
     fclose(objFile);
 }

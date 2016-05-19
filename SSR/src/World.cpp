@@ -41,7 +41,7 @@ World::World()
 */
 void World::build(void){
     // Sampler
-    int numberOfSamples = 1000;
+    int numberOfSamples = 10000;
     vp.sampler_ptr = new MultiJitter(numberOfSamples);
     vp.num_samples = vp.sampler_ptr->num_samples;
 
@@ -86,26 +86,26 @@ void World::build(void){
     // Right Sphere.
     Vec4 s2_c = Vec4(7.5,3.5,18.0);
     Sphere * s2 = new Sphere(s2_c,3.5);
-    s2->material_ptr = new Reflective();
-    s2->material_ptr->set_kd(0.0);
-    s2->material_ptr->set_ka(0.0);
-    s2->material_ptr->set_cd(white);
-    s2->material_ptr->set_ks(0.0);
-    // s2->material_ptr = new Matte();
-    // s2->material_ptr->set_kd(1.0);
+    // s2->material_ptr = new Reflective();
+    // s2->material_ptr->set_kd(0.0);
     // s2->material_ptr->set_ka(0.0);
     // s2->material_ptr->set_cd(white);
+    // s2->material_ptr->set_ks(0.0);
+    s2->material_ptr = new Matte();
+    s2->material_ptr->set_kd(1.0);
+    s2->material_ptr->set_ka(0.0);
+    s2->material_ptr->set_cd(RGBColor(1.0,0.2,0.2));
     add_object(s2);
 
     // Left sphere.
-    // Vec4 s4_c = Vec4(-7.5,3.5,12.5);
-    // Sphere * s4 = new Sphere(s4_c,3.5);
-    // s4->material_ptr = new Reflective();
-    // s4->material_ptr->set_kd(0.0);
-    // s4->material_ptr->set_ka(0.0);
-    // s4->material_ptr->set_cd(white);
-    // s4->material_ptr->set_ks(0.0);
-    // add_object(s4);
+    Vec4 s4_c = Vec4(-7.5,3.5,12.5);
+    Sphere * s4 = new Sphere(s4_c,3.5);
+    s4->material_ptr = new Reflective();
+    s4->material_ptr->set_kd(0.0);
+    s4->material_ptr->set_ka(0.0);
+    s4->material_ptr->set_cd(white);
+    s4->material_ptr->set_ks(0.0);
+    add_object(s4);
 
     // My cornell box
 
@@ -129,10 +129,11 @@ void World::build(void){
     Vec4 leftWall_n = Vec4(1.0,0.0,0.0);
 
     Rectangle * LEFT_WALL = new Rectangle(leftWall_p,leftWall_a,leftWall_b,leftWall_n);
-    LEFT_WALL->material_ptr = new Matte();
-    LEFT_WALL->material_ptr->set_kd(1.0);
+    LEFT_WALL->material_ptr = new Reflective();
+    LEFT_WALL->material_ptr->set_kd(0.0);
     LEFT_WALL->material_ptr->set_ka(0.0);
-    LEFT_WALL->material_ptr->set_cd(RGBColor(1.0,0.2,0.2));
+    LEFT_WALL->material_ptr->set_cd(white);
+    LEFT_WALL->material_ptr->set_ks(0.0);
     add_object(LEFT_WALL);
 
     // Right Wall.
@@ -143,10 +144,11 @@ void World::build(void){
     Vec4 rightWall_n = Vec4(-1.0,0.0,0.0);
 
     Rectangle * RIGHT_WALL = new Rectangle(rightWall_p,rightWall_a,rightWall_b,rightWall_n);
-    RIGHT_WALL->material_ptr = new Matte();
-    RIGHT_WALL->material_ptr->set_kd(1.0);
+    RIGHT_WALL->material_ptr = new Reflective();
+    RIGHT_WALL->material_ptr->set_kd(0.0);
     RIGHT_WALL->material_ptr->set_ka(0.0);
-    RIGHT_WALL->material_ptr->set_cd(RGBColor(0.2,1.0,0.2));
+    RIGHT_WALL->material_ptr->set_cd(white);
+    RIGHT_WALL->material_ptr->set_ks(0.0);
     add_object(RIGHT_WALL);
 
     // Back Wall.
@@ -157,10 +159,11 @@ void World::build(void){
     Vec4 backWall_n = Vec4(0.0,0.0,1.0);
 
     Rectangle * BACK_WALL = new Rectangle(backWall_p,backWall_a,backWall_b,backWall_n);
-    BACK_WALL->material_ptr = new Matte();
-    BACK_WALL->material_ptr->set_kd(1.0);
+    BACK_WALL->material_ptr = new Reflective();
+    BACK_WALL->material_ptr->set_kd(0.0);
     BACK_WALL->material_ptr->set_ka(0.0);
     BACK_WALL->material_ptr->set_cd(white);
+    BACK_WALL->material_ptr->set_ks(0.0);
     add_object(BACK_WALL);
 
     // Ceiling.
