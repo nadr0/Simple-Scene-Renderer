@@ -78,3 +78,4 @@ Images below are created from path tracing with diffuse interreflections.
 * 512x512
 * 10,000 samples per pixel
 * 2.2 hours to render
+* depth of 15
