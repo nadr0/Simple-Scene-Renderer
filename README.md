@@ -31,7 +31,7 @@ More To Come!
 - non linear projections (fish eye)
 - refraction
 - instancing
-- glossy reflections
+- ~~glossy reflections~~
 - textures
 - ambient occlusion
 - ~~smooth shaded triangles~~
