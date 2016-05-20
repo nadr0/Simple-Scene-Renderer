@@ -72,3 +72,9 @@ Images below are created from path tracing with diffuse interreflections.
 * 512x512
 * 10,000 samples per pixel
 * 2.7 hours to render
+
+![alt test](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/8193%2C10k.png "")
+
+*512x512
+* 10,000 samples per pixel
+* 2.2 hours to render
