@@ -21,7 +21,7 @@ RGBColor Reflective::shade(ShadeRec & sr){
 }
 
 RGBColor Reflective::area_light_shade(ShadeRec & sr){
-    RGBColor L(Phong::shade(sr));  // direct illumination
+    RGBColor L(Phong::area_light_shade(sr));  // direct illumination
 
     Vec4 wo = -sr.ray.d;
     Vec4 wi;
