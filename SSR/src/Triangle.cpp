@@ -1,5 +1,9 @@
+#include <iostream>
 #include "Triangle.h"
+#include "Mesh.h"
 
+using std::cout;
+using std::endl;
 
 Triangle::Triangle(){
     a = Vec4(0.0,0.0,0.0);
@@ -22,6 +26,11 @@ Triangle::Triangle(Vec4 & _a, Vec4 & _b, Vec4 & _c, Vec4 & _n){
     CENTER_POSITION[2] = (a[2] + b[2] + c[2])/3;
     compute_BBox();
     light = false;
+}
+
+Vec4 Triangle::interpolated_normal(float beta, float gamma){
+    Vec4 normal = ((1 - beta - gamma) * n0 + beta * n1 + gamma * n2);
+    return normal;
 }
 
 bool Triangle::hit(Ray & ray, double & tmin, ShadeRec & sr){
@@ -58,7 +67,8 @@ bool Triangle::hit(Ray & ray, double & tmin, ShadeRec & sr){
         return (false);
 
     tmin 				= t;
-    sr.normal 			= normal;
+    // sr.normal 			= normal;
+    sr.normal           = interpolated_normal(beta,gamma);
     sr.local_hit_point 	= ray.o + t * ray.d;
 
     return (true);

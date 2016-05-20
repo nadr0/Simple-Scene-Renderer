@@ -47,7 +47,7 @@ void World::build(void){
 
     // Camera
     camera_ptr = new Pinhole;
-    camera_ptr->set_eye(0.0, 12.5, 40);
+    camera_ptr->set_eye(0.0, 12.5, 12.5); //40
     camera_ptr->set_lookat(0.0,10.0,0.0);
     camera_ptr->set_view_distance(350);
     camera_ptr->compute_uvw();
@@ -66,39 +66,74 @@ void World::build(void){
     // height of the box.
     int HEIGHT = 25.0;
 
-    Vec4 r1_p = Vec4(-6.25,HEIGHT-2.0,6.25);
-    Vec4 r1_a = Vec4(0.0,0.0,12.5);
-    Vec4 r1_b = Vec4(12.5,0.0,0.0);
+    Vec4 r1_p = Vec4(-12,HEIGHT-2.0,6.25);
+    Vec4 r1_a = Vec4(0.0,0.0,8.0);
+    Vec4 r1_b = Vec4(8.0,0.0,0.0);
     Vec4 r1_n = Vec4(0.0,-1.0,0.0);
 
     Emissive * emissive_ptr = new Emissive();
     emissive_ptr->ls = 2.0;
-
+    emissive_ptr->ce = RGBColor(1.0,0.0,0.0);
     Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
     myRectangleTop->material_ptr = emissive_ptr;
     add_object(myRectangleTop);
-
+    //
     AreaLight * myAreaLight = new AreaLight();
     myAreaLight->obj_ptr = myRectangleTop;
     myAreaLight->material_ptr = emissive_ptr;
     add_light(myAreaLight);
 
+    // --
+    Vec4 r1_p1 = Vec4(-3.5,HEIGHT-2.0,6.25);
+    Vec4 r1_a1 = Vec4(0.0,0.0,8.0);
+    Vec4 r1_b1 = Vec4(8.0,0.0,0.0);
+    Vec4 r1_n1 = Vec4(0.0,-1.0,0.0);
+    Emissive * emissive_ptr1 = new Emissive();
+    emissive_ptr1->ls = 2.0;
+    emissive_ptr1->ce = RGBColor(0.0,1.0,0.0);
+    Rectangle * myRectangleTop1 = new Rectangle(r1_p1,r1_a1,r1_b1,r1_n1);
+    myRectangleTop1->material_ptr = emissive_ptr1;
+    add_object(myRectangleTop1);
+
+    AreaLight * myAreaLight1 = new AreaLight();
+    myAreaLight1->obj_ptr = myRectangleTop1;
+    myAreaLight1->material_ptr = emissive_ptr1;
+    add_light(myAreaLight1);
+
+    // --
+    Vec4 r1_p2 = Vec4(5.5,HEIGHT-2.0,6.25);
+    Vec4 r1_a2 = Vec4(0.0,0.0,8.0);
+    Vec4 r1_b2 = Vec4(8.0,0.0,0.0);
+    Vec4 r1_n2 = Vec4(0.0,-1.0,0.0);
+    Emissive * emissive_ptr2 = new Emissive();
+    emissive_ptr2->ls = 2.0;
+    emissive_ptr2->ce = RGBColor(0.0,0.0,1.0);
+    Rectangle * myRectangleTop2 = new Rectangle(r1_p2,r1_a2,r1_b2,r1_n2);
+    myRectangleTop2->material_ptr = emissive_ptr2;
+    add_object(myRectangleTop2);
+
+    AreaLight * myAreaLight2 = new AreaLight();
+    myAreaLight2->obj_ptr = myRectangleTop2;
+    myAreaLight2->material_ptr = emissive_ptr2;
+    add_light(myAreaLight2);
+
     // Right Sphere.
-    Vec4 s2_c = Vec4(7.5,3.5,18.0);
+    Vec4 s2_c = Vec4(6.5,3.5,12.5);
     Sphere * s2 = new Sphere(s2_c,3.5);
-    // s2->material_ptr = new Reflective();
-    // s2->material_ptr->set_kd(0.0);
-    // s2->material_ptr->set_ka(0.0);
-    // s2->material_ptr->set_cd(white);
-    // s2->material_ptr->set_ks(0.0);
-    s2->material_ptr = new Matte();
-    s2->material_ptr->set_kd(1.0);
+    s2->material_ptr = new Reflective();
+    s2->material_ptr->set_kd(0.0);
     s2->material_ptr->set_ka(0.0);
-    s2->material_ptr->set_cd(RGBColor(1.0,0.2,0.2));
+    s2->material_ptr->set_cd(white);
+    s2->material_ptr->set_ks(0.0);
+    // s2->material_ptr = new Matte();
+    // s2->material_ptr->set_kd(1.0);
+    // s2->material_ptr->set_ka(0.0);
+    // s2->material_ptr->set_cd(RGBColor(1.0,0.2,0.2));
     add_object(s2);
 
     // Left sphere.
-    Vec4 s4_c = Vec4(-7.5,3.5,12.5);
+    // Vec4 s4_c = Vec4(-6.5,3.5,12.5);
+    Vec4 s4_c = Vec4(-6.5,3.5,12.5);
     Sphere * s4 = new Sphere(s4_c,3.5);
     s4->material_ptr = new Reflective();
     s4->material_ptr->set_kd(0.0);
@@ -123,33 +158,33 @@ void World::build(void){
     add_object(FLOOR);
 
     // Left wall.
-    Vec4 leftWall_p = Vec4(-12.5,0.0,0.0);
-    Vec4 leftWall_a = Vec4(0.0,0.0,25.0);
-    Vec4 leftWall_b = Vec4(0.0,HEIGHT,0.0);
-    Vec4 leftWall_n = Vec4(1.0,0.0,0.0);
-
-    Rectangle * LEFT_WALL = new Rectangle(leftWall_p,leftWall_a,leftWall_b,leftWall_n);
-    LEFT_WALL->material_ptr = new Reflective();
-    LEFT_WALL->material_ptr->set_kd(0.0);
-    LEFT_WALL->material_ptr->set_ka(0.0);
-    LEFT_WALL->material_ptr->set_cd(white);
-    LEFT_WALL->material_ptr->set_ks(0.0);
-    add_object(LEFT_WALL);
+    // Vec4 leftWall_p = Vec4(-12.5,0.0,0.0);
+    // Vec4 leftWall_a = Vec4(0.0,0.0,25.0);
+    // Vec4 leftWall_b = Vec4(0.0,HEIGHT,0.0);
+    // Vec4 leftWall_n = Vec4(1.0,0.0,0.0);
+    //
+    // Rectangle * LEFT_WALL = new Rectangle(leftWall_p,leftWall_a,leftWall_b,leftWall_n);
+    // LEFT_WALL->material_ptr = new Reflective();
+    // LEFT_WALL->material_ptr->set_kd(0.0);
+    // LEFT_WALL->material_ptr->set_ka(0.0);
+    // LEFT_WALL->material_ptr->set_cd(white);
+    // LEFT_WALL->material_ptr->set_ks(0.0);
+    // add_object(LEFT_WALL);
 
     // Right Wall.
 
-    Vec4 rightWall_p = Vec4(12.5,0.0,0.0);
-    Vec4 rightWall_a = Vec4(0.0,0.0,25.0);
-    Vec4 rightWall_b = Vec4(0.0,HEIGHT,0.0);
-    Vec4 rightWall_n = Vec4(-1.0,0.0,0.0);
-
-    Rectangle * RIGHT_WALL = new Rectangle(rightWall_p,rightWall_a,rightWall_b,rightWall_n);
-    RIGHT_WALL->material_ptr = new Reflective();
-    RIGHT_WALL->material_ptr->set_kd(0.0);
-    RIGHT_WALL->material_ptr->set_ka(0.0);
-    RIGHT_WALL->material_ptr->set_cd(white);
-    RIGHT_WALL->material_ptr->set_ks(0.0);
-    add_object(RIGHT_WALL);
+    // Vec4 rightWall_p = Vec4(12.5,0.0,0.0);
+    // Vec4 rightWall_a = Vec4(0.0,0.0,25.0);
+    // Vec4 rightWall_b = Vec4(0.0,HEIGHT,0.0);
+    // Vec4 rightWall_n = Vec4(-1.0,0.0,0.0);
+    //
+    // Rectangle * RIGHT_WALL = new Rectangle(rightWall_p,rightWall_a,rightWall_b,rightWall_n);
+    // RIGHT_WALL->material_ptr = new Reflective();
+    // RIGHT_WALL->material_ptr->set_kd(0.0);
+    // RIGHT_WALL->material_ptr->set_ka(0.0);
+    // RIGHT_WALL->material_ptr->set_cd(white);
+    // RIGHT_WALL->material_ptr->set_ks(0.0);
+    // add_object(RIGHT_WALL);
 
     // Back Wall.
 
@@ -179,6 +214,22 @@ void World::build(void){
     CEILING->material_ptr->set_ka(0.0);
     CEILING->material_ptr->set_cd(white);
     add_object(CEILING);
+
+    // // Front Wall.
+    Vec4 frontWall_p = Vec4(-12.5,0.0,25.0);
+    Vec4 frontWall_a = Vec4(0.0,HEIGHT,0.0);
+    Vec4 frontWall_b = Vec4(25.0,0.0,0.0);
+    Vec4 frontWall_n = Vec4(0.0,0.0,-1.0);
+
+    Rectangle * FRONT_WALL = new Rectangle(frontWall_p,frontWall_a,frontWall_b,frontWall_n);
+    FRONT_WALL->material_ptr = new Reflective();
+    FRONT_WALL->material_ptr->set_kd(0.0);
+    FRONT_WALL->material_ptr->set_ka(0.0);
+    FRONT_WALL->material_ptr->set_cd(white);
+    FRONT_WALL->material_ptr->set_ks(0.0);
+    add_object(FRONT_WALL);
+
+
 
     BVH_root = new BVH(1);
     BVH_root->buildBVH(objects, 0);

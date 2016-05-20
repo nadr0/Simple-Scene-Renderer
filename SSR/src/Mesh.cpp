@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdio.h>
 #include <vector>
 #include "Mesh.h"
@@ -6,6 +7,9 @@
 #include "RGBColor.h"
 #include "Triangle.h"
 #include "Reflective.h"
+
+using std::cout;
+using std::endl;
 
 Mesh::Mesh(){
     this->wptr = nullptr;
@@ -47,16 +51,16 @@ void Mesh::trianglesToWorld(){
         n = normalize(n);
 
         Triangle * myTriangle = new Triangle(V0, V1, V2,n);
-        myTriangle->material_ptr = new Reflective();
-        myTriangle->material_ptr->set_kd(0.0);
-        myTriangle->material_ptr->set_ka(0.0);
-        myTriangle->material_ptr->set_cd(RGBColor(0.0,0.0,0.0));
-        myTriangle->material_ptr->set_ks(0.0);
-        // myTriangle->material_ptr = new Matte();
-        // myTriangle->material_ptr->set_kd(1.0);
-        // myTriangle->material_ptr->set_ka(0.0);
-        // myTriangle->material_ptr->set_cd(this->color);
 
+        myTriangle->face[0] = currentFace.i_0;
+        myTriangle->face[1] = currentFace.i_1;
+        myTriangle->face[2] = currentFace.i_2;
+
+        myTriangle->material_ptr = new Matte();
+        myTriangle->material_ptr->set_kd(1.0);
+        myTriangle->material_ptr->set_ka(0.0);
+        myTriangle->material_ptr->set_cd(this->color);
+        triangle_ptrs.push_back(myTriangle);
         this->wptr->add_object(myTriangle);
     }
 }
@@ -93,7 +97,7 @@ void Mesh::readObject(char * file_name){
     faceList.push_back(list_Off_Set);
 
     /* Offset for the perVertexNormals since them vertices start counting at 1*/
-    Normal normal_Off_Set;
+    Vec4 normal_Off_Set;
     perVertexNormals.push_back(normal_Off_Set);
 
 
@@ -158,4 +162,60 @@ void Mesh::readObject(char * file_name){
     }
     // printf("%f\n", minVALUE);
     fclose(objFile);
+}
+
+
+void Mesh::calculateNormalList(){
+
+    /* Go through all vertices*/
+    for(int i = 1; i < faceList.size(); i++){
+        /* Normal for one vertex*/
+        Vec4 sumNormal;
+        sumNormal[0] = 0;
+        sumNormal[1] = 0;
+        sumNormal[2] = 0;
+
+        /* Go through the adjacent faces to the vertex*/
+        for(int j = 0; j < faceList[i].size(); j++){
+
+            /* Get the face index*/
+            int indexFace = faceList[i][j];
+            /* Get the face*/
+            Face currentFace = faces[indexFace];
+            /* Get the vertices from the face indices*/
+            Vertex v1  = vertices[currentFace.i_0];
+            Vertex v2  = vertices[currentFace.i_1];
+            Vertex v3  = vertices[currentFace.i_2];
+
+            /* Compute the normal of the current face*/
+            Vec4 A(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z);
+            Vec4 B(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z);
+            Vec4 aXb;
+
+            /* Normal from each face*/
+            aXb = cross(A,B);
+
+            /* Add all the normals together*/
+            sumNormal[0] += aXb[0];
+            sumNormal[1] += aXb[1];
+            sumNormal[2] += aXb[2];
+        }
+
+        /* The sum of the normalized vectors adjacent*/
+        sumNormal = normalize(sumNormal);
+
+        /* Store the vertex normal*/
+        perVertexNormals.push_back(sumNormal);
+    }
+
+    for (int i = 0; i < triangle_ptrs.size(); i++) {
+
+        Triangle * currentTriangle = triangle_ptrs[i];
+        currentTriangle->n0 = perVertexNormals[currentTriangle->face[0]];
+        currentTriangle->n1 = perVertexNormals[currentTriangle->face[1]];
+        currentTriangle->n2 = perVertexNormals[currentTriangle->face[2]];
+
+    }
+
+
 }

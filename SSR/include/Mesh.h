@@ -2,6 +2,9 @@
 #define MESH_H_
 
 #include "World.h"
+#include "Triangle.h"
+
+class Triangle;
 
 struct Vertex{
     float x;
@@ -26,7 +29,8 @@ public:
     vector<Vertex> vertices; // vertices for the mesh
     vector<Face> faces; //  faces for the mesh
     vector< vector<int> >  faceList; // stores the faces adjacent to a vertex
-    vector<Normal> perVertexNormals; // vertex normals
+    vector<Vec4> perVertexNormals; // vertex normals
+    vector<Triangle *> triangle_ptrs; // vertex normals
     World * wptr;
     Mesh();
     Mesh(World * wptr);
@@ -37,5 +41,6 @@ public:
 
     void readObject(char * fileName); //read the file to populate the vectors
     void trianglesToWorld();
+    void calculateNormalList();
 };
 #endif
