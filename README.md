@@ -37,6 +37,8 @@ More To Come!
 - ~~smooth shaded triangles~~
 - updated .obj reader
 - scene language
+- SAH BVH method
+- Microfacet specular BRDF
 
 -----
 
