@@ -7,6 +7,7 @@ class GlossyReflector : public Phong{
 public:
     GlossyReflector();
     virtual RGBColor area_light_shade(ShadeRec & sr);
+    virtual RGBColor path_shade(ShadeRec & sr);
     GlossySpecular * glossy_specular_brdf;
     void set_kd(float kd);
     void set_ka(float ka);

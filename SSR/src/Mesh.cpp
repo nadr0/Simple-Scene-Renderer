@@ -7,6 +7,7 @@
 #include "RGBColor.h"
 #include "Triangle.h"
 #include "Reflective.h"
+#include "Microfacet.h"
 
 using std::cout;
 using std::endl;
@@ -56,7 +57,7 @@ void Mesh::trianglesToWorld(){
         myTriangle->face[1] = currentFace.i_1;
         myTriangle->face[2] = currentFace.i_2;
 
-        myTriangle->material_ptr = new Matte();
+        myTriangle->material_ptr = new Microfacet();
         myTriangle->material_ptr->set_kd(1.0);
         myTriangle->material_ptr->set_ka(0.0);
         myTriangle->material_ptr->set_cd(this->color);

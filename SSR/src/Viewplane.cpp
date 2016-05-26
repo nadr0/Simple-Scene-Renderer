@@ -20,7 +20,7 @@ Viewplane::Viewplane(int _hres, int _vres){
     hres = _hres;
     vres = _vres;
     s = 1.0;
-    maxDepth = 3;
+    maxDepth = 6;
     IMAGE_RGB = 3;
     // Allocate image data
     image = (unsigned char *)calloc(hres*vres*IMAGE_RGB,sizeof(unsigned char));

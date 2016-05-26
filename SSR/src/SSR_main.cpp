@@ -18,21 +18,21 @@ int main(){
     // Create World
     World world;
 
+/*
     // Meshes
-   // Mesh * COW = new Mesh(&world);
-   // char file_name[10] = "bunny.obj";
-   // COW->readObject(file_name);
+   Mesh * COW = new Mesh(&world);
+   char file_name[11] = "teapot.obj";
+   COW->readObject(file_name);
    // COW->SCALE = 75.0;
-   // // COW->SCALE = 4.0;
-   // // COW->SCALE = 15.0;
-   // // float minValue = -0.319838 *15; // COW
-   // float minValue = 0.033310 * COW->SCALE; // BUNNY
-   // COW->offset = Vec4(0.0,-minValue,10.0);
-   // COW->color = RGBColor(1.0, 0.2, 0.2);
-   // COW->trianglesToWorld();
-   // COW->calculateNormalList();
-   // printf("%s Mesh Completed.\n", file_name);
-
+   COW->SCALE = 2.0;
+   // COW->SCALE = 15.0;
+   // float minValue = -0.319838 *15; // COW
+   COW->offset = Vec4(0.0,0.0,10.0);
+   COW->color = RGBColor(1.0, 0.2, 0.2);
+   COW->trianglesToWorld();
+   COW->calculateNormalList();
+   printf("%s Mesh Completed.\n", file_name);
+*/
     // Build Scene
     world.build();
 

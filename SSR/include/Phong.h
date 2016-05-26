@@ -5,12 +5,12 @@
 #include "Lambertian.h"
 #include "GlossySpecular.h"
 
-
 class Phong: public Material{
 public:
     Lambertian * ambient_brdf;
     Lambertian * diffuse_brdf;
     GlossySpecular * specular_brdf;
+
 
     void set_kd(float kd);
     void set_ka(float ka);

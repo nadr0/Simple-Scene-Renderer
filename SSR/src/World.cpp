@@ -22,6 +22,7 @@
 #include "Emissive.h"
 #include "DirectionalLight.h"
 #include "Rectangle.h"
+#include "Microfacet.h"
 #include "AreaLight.h"
 #include "AreaLighting.h"
 #include "PointLight.h"
@@ -32,7 +33,8 @@ using std::cout;
 using std::endl;
 
 World::World()
-    :   background_color(0.0, 0.0, 0.0) // 0.75 gray
+    :   background_color(0.0, 0.0, 0.0)
+    // :   background_color(0.75, 0.75, 0.75) // 0.75 gray
 {
     vp = Viewplane(512,512); // hres,vres
 }
@@ -42,14 +44,14 @@ World::World()
 */
 void World::build(void){
     // Sampler
-    int numberOfSamples = 64;
+    int numberOfSamples = 4;
     vp.sampler_ptr = new MultiJitter(numberOfSamples);
     vp.num_samples = vp.sampler_ptr->num_samples;
 
     // Camera
     camera_ptr = new Pinhole;
     camera_ptr->set_eye(0.0, 12.5, 40);
-    camera_ptr->set_lookat(0.0,10.0,0.0);
+    camera_ptr->set_lookat(0.0,10.0,0.0); // 10.0
     camera_ptr->set_view_distance(350);
     camera_ptr->compute_uvw();
 
@@ -87,30 +89,23 @@ void World::build(void){
     // Right Sphere.
     Vec4 s2_c = Vec4(7.5,3.5,18.0);
     Sphere * s2 = new Sphere(s2_c,3.5);
-    s2->material_ptr = new Matte();
+    s2->material_ptr = new Phong();
     s2->material_ptr->set_kd(1.0);
     s2->material_ptr->set_ka(0.0);
-    s2->material_ptr->set_cd(white);
+    s2->material_ptr->set_cd(RGBColor(1.0,0.0,0.0));
     add_object(s2);
 
-    int s4_num_samples = 256;
-    float s4_exp = 1;
+
+    int s4_num_samples = 100;
+    float s4_exp = 75;
+    
     // Left sphere.
     Vec4 s4_c = Vec4(-7.5,3.5,12.5);
     Sphere * s4 = new Sphere(s4_c,3.5);
-    GlossyReflector * gloss = new GlossyReflector();
-    gloss->set_samples(s4_num_samples, s4_exp);
-    gloss->set_exponent(s4_exp);
-    s4->material_ptr = gloss;
-    // s4->material_ptr->set_sampler(s4_num_samples, s4_exp);
+    s4->material_ptr = new Microfacet();
+    s4->material_ptr->set_kd(1.0);
     s4->material_ptr->set_ka(0.0);
-    s4->material_ptr->set_kd(0.0);
-    s4->material_ptr->set_ks(0.0);
-    s4->material_ptr->set_exp(s4_exp);
-    s4->material_ptr->set_cd(RGBColor(1.0, 1.0, 0.3));
-    s4->material_ptr->set_kr(0.9);
-    // s4->material_ptr->set_exponent(s4_exp);
-    s4->material_ptr->set_cr(RGBColor(1.0, 1.0, 0.3)); // lemon
+    s4->material_ptr->set_cd(RGBColor(1.0,0.0,0.0));
     add_object(s4);
 
     // My cornell box

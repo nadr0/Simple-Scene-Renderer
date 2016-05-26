@@ -30,6 +30,7 @@ Triangle::Triangle(Vec4 & _a, Vec4 & _b, Vec4 & _c, Vec4 & _n){
 
 Vec4 Triangle::interpolated_normal(float beta, float gamma){
     Vec4 normal = ((1 - beta - gamma) * n0 + beta * n1 + gamma * n2);
+    normal = normalize(normal);
     return normal;
 }
 
