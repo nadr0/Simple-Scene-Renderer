@@ -9,6 +9,8 @@ Features
     * Direct
     * Point
     * Area
+    * Ambient
++ Ambient Occlusion
 + Materials
     * Matte
     * Phong
