@@ -41,6 +41,7 @@ More To Come!
 - scene language
 - SAH BVH method
 - ~~Microfacet specular BRDF~~
+   * [Original Cook-Torrance Paper](http://www.cs.columbia.edu/~belhumeur/courses/appearance/cook-torrance.pdf)
    * [Siggraph 2013, Physically Based Rendering course notes](http://blog.selfshadow.com/publications/s2013-shading-course/hoffman/s2013_pbs_physics_math_notes.pdf)
    * [Implementation/Source Code](http://ruh.li/GraphicsCookTorrance.html)
 
