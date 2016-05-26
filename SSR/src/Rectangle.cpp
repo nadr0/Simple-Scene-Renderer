@@ -27,7 +27,7 @@ Rectangle::Rectangle(Vec4 p0, Vec4 _a, Vec4 _b, Vec4 n){
     b_len_squared = length_of_V_squared(b);
     area = length_of_V(a) * length_of_V(b);
     inv_area = 1.0/area;
-    int samples = 512; // was 16...
+    int samples = 64; // was 16...512
     sampler_ptr = new MultiJitter(samples);
     kEpsilon = 0.001;
     compute_bbox();

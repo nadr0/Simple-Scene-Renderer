@@ -8,9 +8,9 @@ using std::cout;
 using std::endl;
 
 MicrofacetSpecular::MicrofacetSpecular(){
-    ks = 1.0;
+    ks = 0.1;
     cs = RGBColor(1.0,1.0,1.0);
-    Fo = 1.2;
+    Fo = RGBColor(1.00,0.86,0.57);
 }
 
 RGBColor MicrofacetSpecular::f(ShadeRec & sr, Vec4 & wo, Vec4 & wi){
@@ -23,7 +23,7 @@ RGBColor MicrofacetSpecular::sample_f(ShadeRec& sr, Vec4 & wo, Vec4 & wi){
     wi = normalize(wi);
     wo = normalize(wo);
 
-    float roughnessValue = 0.3; // 0 : smooth, 1: rough
+    float roughnessValue = 0.15; // 0 : smooth, 1: rough
     // half vector
     // incoming light and view direction, half vector between them
     Vec4 h = normalize(wi + wo);
@@ -50,11 +50,13 @@ RGBColor MicrofacetSpecular::sample_f(ShadeRec& sr, Vec4 & wo, Vec4 & wi){
     float roughness = r1 * exp(r2);
 
     // Fresnel schlick approximation
-    float fresnel = pow(1.0 - vdoth, 5.0);
-    fresnel *= (1.0 - Fo);
-    fresnel += Fo;
+    RGBColor RGBFresnel = Fo + (RGBColor(1.0,1.0,1.0) - Fo) * pow(1.0 - vdoth, 5.0);
+    // float fresnel = pow(1.0 - vdoth, 5.0);
+    // fresnel *= (1.0 - Fo);
+    // fresnel += Fo;
 
-    float brdf = fresnel * GeoAtt * roughness / (ndotv * ndotl * PI);
+    // float brdf = fresnel * GeoAtt * roughness / (ndotv * ndotl * PI);
+    RGBColor brdf = RGBFresnel * GeoAtt * roughness / (ndotv * ndotl * PI);
 
     return (cs * ks * brdf);
  }
@@ -80,6 +82,6 @@ void MicrofacetSpecular::set_cs(RGBColor c){
     cs = c;
 }
 
-void MicrofacetSpecular::set_Fo(float _Fo){
+void MicrofacetSpecular::set_Fo(RGBColor _Fo){
     Fo = _Fo;
 }

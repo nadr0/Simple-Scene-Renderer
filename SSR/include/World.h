@@ -28,6 +28,8 @@ public:
     Tracer * tracer_ptr;         /* Style of ray tracing */
     RGBColor background_color;   /* Background color for the image */
 
+    Light * ambient_ptr;
+
     BVH * BVH_root;
 
     World();

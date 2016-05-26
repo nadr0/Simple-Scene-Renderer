@@ -2,6 +2,7 @@
 #define MICROFACETSPECULAR_H_
 
 #include "BRDF.h"
+#include "RGBColor.h"
 
 class MicrofacetSpecular : public BRDF{
 public:
@@ -14,12 +15,12 @@ public:
     void set_ks(float ks);
     void set_cs(RGBColor c);
     void set_samples(int num_samples, float exp);
-    void set_Fo(float Fo);
+    void set_Fo(RGBColor Fo);
 
     Sampler * sampler;
 
     float ks;
     RGBColor cs;
-    float Fo;
+    RGBColor Fo;
 };
 #endif

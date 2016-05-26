@@ -27,6 +27,7 @@
 #include "AreaLighting.h"
 #include "PointLight.h"
 #include "GlossyReflector.h"
+#include "AmbientOccluder.h"
 #include "stb_image_write.h"
 
 using std::cout;
@@ -44,7 +45,7 @@ World::World()
 */
 void World::build(void){
     // Sampler
-    int numberOfSamples = 4;
+    int numberOfSamples = 128;
     vp.sampler_ptr = new MultiJitter(numberOfSamples);
     vp.num_samples = vp.sampler_ptr->num_samples;
 
@@ -56,8 +57,8 @@ void World::build(void){
     camera_ptr->compute_uvw();
 
     // Ray tracing method
-    // tracer_ptr = new MultipleObjects(this);     /* Determine tracer */
-    tracer_ptr = new AreaLighting(this);
+    tracer_ptr = new MultipleObjects(this);     /* Determine tracer */
+    // tracer_ptr = new AreaLighting(this);
     // tracer_ptr = new PathTrace(this);
 
     // Lighting
@@ -74,39 +75,46 @@ void World::build(void){
     Vec4 r1_b = Vec4(12.5,0.0,0.0);
     Vec4 r1_n = Vec4(0.0,-1.0,0.0);
 
-    Emissive * emissive_ptr = new Emissive();
-    emissive_ptr->ls = 2.0;
+    // Emissive * emissive_ptr = new Emissive();
+    // emissive_ptr->ls = 2.0;
+    //
+    // Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
+    // myRectangleTop->material_ptr = emissive_ptr;
+    // add_object(myRectangleTop);
+    //
+    // AreaLight * myAreaLight = new AreaLight();
+    // myAreaLight->obj_ptr = myRectangleTop;
+    // myAreaLight->material_ptr = emissive_ptr;
+    // add_light(myAreaLight);
 
-    Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
-    myRectangleTop->material_ptr = emissive_ptr;
-    add_object(myRectangleTop);
-
-    AreaLight * myAreaLight = new AreaLight();
-    myAreaLight->obj_ptr = myRectangleTop;
-    myAreaLight->material_ptr = emissive_ptr;
-    add_light(myAreaLight);
+    MultiJitter * sampler_ptr = new MultiJitter(256);
+    AmbientOccluder * myLight = new AmbientOccluder();
+    myLight->ls = 1.0;
+    myLight->color = white;
+    myLight->set_sampler(sampler_ptr);
+    ambient_ptr = myLight;
 
     // Right Sphere.
     Vec4 s2_c = Vec4(7.5,3.5,18.0);
     Sphere * s2 = new Sphere(s2_c,3.5);
-    s2->material_ptr = new Phong();
+    s2->material_ptr = new Matte();
     s2->material_ptr->set_kd(1.0);
-    s2->material_ptr->set_ka(0.0);
+    s2->material_ptr->set_ka(0.25);
     s2->material_ptr->set_cd(RGBColor(1.0,0.0,0.0));
     add_object(s2);
 
 
     int s4_num_samples = 100;
     float s4_exp = 75;
-    
+
     // Left sphere.
     Vec4 s4_c = Vec4(-7.5,3.5,12.5);
     Sphere * s4 = new Sphere(s4_c,3.5);
     s4->material_ptr = new Microfacet();
     s4->material_ptr->set_kd(1.0);
     s4->material_ptr->set_ka(0.0);
-    s4->material_ptr->set_cd(RGBColor(1.0,0.0,0.0));
-    add_object(s4);
+    s4->material_ptr->set_cd(RGBColor(0.95,0.64,0.54));
+    // add_object(s4);
 
     // My cornell box
 
@@ -119,7 +127,7 @@ void World::build(void){
     Rectangle * FLOOR = new Rectangle(floor_p,floor_a,floor_b,floor_n);
     FLOOR->material_ptr = new Matte();
     FLOOR->material_ptr->set_kd(1.0);
-    FLOOR->material_ptr->set_ka(0.0);
+    FLOOR->material_ptr->set_ka(0.25);
     FLOOR->material_ptr->set_cd(white);
     add_object(FLOOR);
 
@@ -134,7 +142,7 @@ void World::build(void){
     LEFT_WALL->material_ptr->set_kd(1.0);
     LEFT_WALL->material_ptr->set_ka(0.0);
     LEFT_WALL->material_ptr->set_cd(RGBColor(1.0,0.2,0.2));
-    add_object(LEFT_WALL);
+    // add_object(LEFT_WALL);
 
     // Right Wall.
 
@@ -148,7 +156,7 @@ void World::build(void){
     RIGHT_WALL->material_ptr->set_kd(1.0);
     RIGHT_WALL->material_ptr->set_ka(0.0);
     RIGHT_WALL->material_ptr->set_cd(RGBColor(0.2,1.0,0.2));
-    add_object(RIGHT_WALL);
+    // add_object(RIGHT_WALL);
 
     // Back Wall.
 
@@ -162,7 +170,7 @@ void World::build(void){
     BACK_WALL->material_ptr->set_kd(1.0);
     BACK_WALL->material_ptr->set_ka(0.0);
     BACK_WALL->material_ptr->set_cd(white);
-    add_object(BACK_WALL);
+    // add_object(BACK_WALL);
 
     // Ceiling.
 
@@ -176,7 +184,7 @@ void World::build(void){
     CEILING->material_ptr->set_kd(1.0);
     CEILING->material_ptr->set_ka(0.0);
     CEILING->material_ptr->set_cd(white);
-    add_object(CEILING);
+    // add_object(CEILING);
 
 
     BVH_root = new BVH(1);

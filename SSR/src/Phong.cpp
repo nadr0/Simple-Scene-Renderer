@@ -15,7 +15,7 @@ RGBColor Phong::shade(ShadeRec & sr){
 
     Vec4 wo = -sr.ray.d;
     // * Can add world ambient color value for L
-	RGBColor L = ambient_brdf->rho(sr, wo);
+	RGBColor L = ambient_brdf->rho(sr, wo) * sr.w->ambient_ptr->L(sr);
 	int num_lights = sr.w->lights.size();
 
 	for (int j = 0; j < num_lights; j++) {
@@ -43,7 +43,7 @@ RGBColor Phong::shade(ShadeRec & sr){
 RGBColor Phong::area_light_shade(ShadeRec & sr){
     Vec4 wo = -sr.ray.d;
     // * Can add world ambient color value for L
-    RGBColor L = ambient_brdf->rho(sr, wo);
+    RGBColor L = ambient_brdf->rho(sr, wo) * sr.w->ambient_ptr->L(sr);;
     int num_lights = sr.w->lights.size();
 
     for (int j = 0; j < num_lights; j++) {
