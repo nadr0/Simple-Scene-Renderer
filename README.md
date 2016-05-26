@@ -38,7 +38,9 @@ More To Come!
 - updated .obj reader
 - scene language
 - SAH BVH method
-- Microfacet specular BRDF
+- ~~Microfacet specular BRDF~~
+   * [Siggraph 2013, Physically Based Rendering course notes](http://blog.selfshadow.com/publications/s2013-shading-course/hoffman/s2013_pbs_physics_math_notes.pdf)
+   * [Implementation/Source Code](http://ruh.li/GraphicsCookTorrance.html)
 
 -----
 
