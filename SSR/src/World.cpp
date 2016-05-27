@@ -35,8 +35,8 @@ using std::cout;
 using std::endl;
 
 World::World()
-    // :   background_color(0.0, 0.0, 0.0)
-    :   background_color(0.75, 0.75, 0.75) // 0.75 gray
+    :   background_color(0.0, 0.0, 0.0)
+    // :   background_color(0.75, 0.75, 0.75) // 0.75 gray
 {
     vp = Viewplane(512,512); // hres,vres
 }
@@ -46,14 +46,14 @@ World::World()
 */
 void World::build(void){
     // Sampler
-    int numberOfSamples = 16;
+    int numberOfSamples = 64;
     vp.sampler_ptr = new MultiJitter(numberOfSamples);
     vp.num_samples = vp.sampler_ptr->num_samples;
 
     // Camera
     camera_ptr = new Pinhole;
-    camera_ptr->set_eye(0.0, 7.0, 30);
-    camera_ptr->set_lookat(0.0,7.0,0.0); // 10.0
+    camera_ptr->set_eye(0.0, 12.5, 40);
+    camera_ptr->set_lookat(0.0,10.0,0.0);
     camera_ptr->set_view_distance(350);
     camera_ptr->compute_uvw();
 
@@ -71,27 +71,27 @@ void World::build(void){
     // height of the box.
     int HEIGHT = 25.0;
 
-    Vec4 r1_p = Vec4(-6.25,HEIGHT-2.0,6.25);
+    Vec4 r1_p = Vec4(-6.25,25.0,6.25);
     Vec4 r1_a = Vec4(0.0,0.0,12.5);
     Vec4 r1_b = Vec4(12.5,0.0,0.0);
     Vec4 r1_n = Vec4(0.0,-1.0,0.0);
 
     Emissive * emissive_ptr = new Emissive();
-    emissive_ptr->ls = 120;// 2.0
-    //
-    // Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
-    // myRectangleTop->material_ptr = emissive_ptr;
-    // add_object(myRectangleTop);
+    emissive_ptr->ls = 2.0;// 2.0
 
-    Vec4 d1_c = Vec4(0.0,2.0,12.5);
-    Vec4 d1_n = Vec4(0.0,-1.0,0.0);
-    float d1_r = 1.0;
-    Disk * d1 = new Disk(d1_c, d1_n, d1_r);
-    d1->material_ptr = emissive_ptr;
-    add_object(d1);
+    Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
+    myRectangleTop->material_ptr = emissive_ptr;
+    add_object(myRectangleTop);
+
+    // Vec4 d1_c = Vec4(0.0,25.0,12.5);
+    // Vec4 d1_n = Vec4(0.0,-1.0,0.0);
+    // float d1_r = 2.5;
+    // Disk * d1 = new Disk(d1_c, d1_n, d1_r);
+    // d1->material_ptr = emissive_ptr;
+    // add_object(d1);
 
     AreaLight * myAreaLight = new AreaLight();
-    myAreaLight->obj_ptr = d1;
+    myAreaLight->obj_ptr = myRectangleTop;
     myAreaLight->material_ptr = emissive_ptr;
     add_light(myAreaLight);
 
@@ -109,7 +109,7 @@ void World::build(void){
     s2->material_ptr->set_kd(1.0);
     s2->material_ptr->set_ka(0.25);
     s2->material_ptr->set_cd(RGBColor(1.0,0.0,0.0));
-    // add_object(s2);
+    add_object(s2);
 
     int s4_num_samples = 100;
     float s4_exp = 75;
@@ -121,7 +121,7 @@ void World::build(void){
     s4->material_ptr->set_kd(1.0);
     s4->material_ptr->set_ka(0.25);
     s4->material_ptr->set_cd(RGBColor(0.95,0.64,0.54));
-    // add_object(s4);
+    add_object(s4);
 
     // My cornell box
 
@@ -135,7 +135,7 @@ void World::build(void){
     FLOOR->material_ptr = new Matte();
     FLOOR->material_ptr->set_kd(1.0);
     FLOOR->material_ptr->set_ka(0.0);
-    FLOOR->material_ptr->set_cd(RGBColor(1.0,0.0,0.0));
+    FLOOR->material_ptr->set_cd(RGBColor(0.80,0.80,0.80));
     add_object(FLOOR);
 
     // Left wall.
@@ -149,7 +149,7 @@ void World::build(void){
     LEFT_WALL->material_ptr->set_kd(1.0);
     LEFT_WALL->material_ptr->set_ka(0.0);
     LEFT_WALL->material_ptr->set_cd(RGBColor(1.0,0.2,0.2));
-    // add_object(LEFT_WALL);
+    add_object(LEFT_WALL);
 
     // Right Wall.
 
@@ -163,7 +163,7 @@ void World::build(void){
     RIGHT_WALL->material_ptr->set_kd(1.0);
     RIGHT_WALL->material_ptr->set_ka(0.0);
     RIGHT_WALL->material_ptr->set_cd(RGBColor(0.2,1.0,0.2));
-    // add_object(RIGHT_WALL);
+    add_object(RIGHT_WALL);
 
     // Back Wall.
 
@@ -177,7 +177,7 @@ void World::build(void){
     BACK_WALL->material_ptr->set_kd(1.0);
     BACK_WALL->material_ptr->set_ka(0.0);
     BACK_WALL->material_ptr->set_cd(white);
-    // add_object(BACK_WALL);
+    add_object(BACK_WALL);
 
     // Ceiling.
 
@@ -191,7 +191,7 @@ void World::build(void){
     CEILING->material_ptr->set_kd(1.0);
     CEILING->material_ptr->set_ka(0.0);
     CEILING->material_ptr->set_cd(white);
-    // add_object(CEILING);
+    add_object(CEILING);
 
 
     BVH_root = new BVH(1);
