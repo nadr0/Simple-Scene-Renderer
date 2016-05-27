@@ -57,9 +57,9 @@ void Mesh::trianglesToWorld(){
         myTriangle->face[1] = currentFace.i_1;
         myTriangle->face[2] = currentFace.i_2;
 
-        myTriangle->material_ptr = new Microfacet();
+        myTriangle->material_ptr = new Matte();
         myTriangle->material_ptr->set_kd(1.0);
-        myTriangle->material_ptr->set_ka(0.0);
+        myTriangle->material_ptr->set_ka(0.25);
         myTriangle->material_ptr->set_cd(this->color);
         triangle_ptrs.push_back(myTriangle);
         this->wptr->add_object(myTriangle);

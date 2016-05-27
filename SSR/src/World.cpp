@@ -51,8 +51,8 @@ void World::build(void){
 
     // Camera
     camera_ptr = new Pinhole;
-    camera_ptr->set_eye(0.0, 12.5, 40);
-    camera_ptr->set_lookat(0.0,10.0,0.0); // 10.0
+    camera_ptr->set_eye(0.0, 7.0, 30);
+    camera_ptr->set_lookat(0.0,7.0,0.0); // 10.0
     camera_ptr->set_view_distance(350);
     camera_ptr->compute_uvw();
 
@@ -101,7 +101,7 @@ void World::build(void){
     s2->material_ptr->set_kd(1.0);
     s2->material_ptr->set_ka(0.25);
     s2->material_ptr->set_cd(RGBColor(1.0,0.0,0.0));
-    add_object(s2);
+    // add_object(s2);
 
 
     int s4_num_samples = 100;
@@ -110,9 +110,9 @@ void World::build(void){
     // Left sphere.
     Vec4 s4_c = Vec4(-7.5,3.5,12.5);
     Sphere * s4 = new Sphere(s4_c,3.5);
-    s4->material_ptr = new Microfacet();
+    s4->material_ptr = new Matte();
     s4->material_ptr->set_kd(1.0);
-    s4->material_ptr->set_ka(0.0);
+    s4->material_ptr->set_ka(0.25);
     s4->material_ptr->set_cd(RGBColor(0.95,0.64,0.54));
     // add_object(s4);
 
