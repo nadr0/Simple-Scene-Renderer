@@ -19,16 +19,18 @@ public:
     vector<Vec4>			samples;				// sample points on a unit square
     vector<Vec4>			sphere_samples;
     vector<Vec4>			hemisphere_samples;
+    vector<Vec4>			disk_samples;			// sample points on a unit disk
     vector<int>				shuffled_indices;		// shuffled samples array indices
     unsigned long 			count;					// the current number of sample points used
     int 					jump;					// random index jump
 
     void map_samples_to_hemisphere(const float p);
-
+    void map_samples_to_disk(void);
     void map_samples_to_sphere(void);
 
     Vec4 sample_hemisphere(void);
     Vec4 sample_sphere(void);
+    Vec4 sample_disk(void);
 
 };
 #endif

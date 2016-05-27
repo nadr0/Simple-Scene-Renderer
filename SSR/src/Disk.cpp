@@ -6,15 +6,37 @@ Disk::Disk(){
     center = Vec4(0.0,0.0,0.0);
     normal = Vec4(0.0,0.0,1.0);
     radius = 1.0;
+    area = PI;
+    inv_area = 1/PI;
     compute_bbox();
+    int samples = 64; // was 16...512
+    sampler_ptr = new MultiJitter(samples);
+    sampler_ptr->map_samples_to_disk();
 }
 
 Disk::Disk(Vec4 c, Vec4 n, float r){
     center = c;
     normal = n;
     radius = r;
+    area = PI * r * r;
+    inv_area = 1/(PI * r * r);
     kEpsilon = 0.00001;
     compute_bbox();
+    int samples = 64; // was 16...512
+    sampler_ptr = new MultiJitter(samples);
+    sampler_ptr->map_samples_to_disk();
+}
+
+Vec4 Disk::get_normal(Vec4 p){
+    return normal;
+}
+Vec4 Disk::sample(){
+    Vec4 samplePoint = Vec4(0.0,0.0,0.0);
+    samplePoint = sampler_ptr->sample_disk();
+    return center + (samplePoint*radius);
+}
+float Disk::pdf(ShadeRec & sr){
+    return inv_area;
 }
 
 bool Disk::hit(Ray & ray, double & tmin, ShadeRec & sr){

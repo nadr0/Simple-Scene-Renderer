@@ -13,8 +13,8 @@ AreaLight::AreaLight(){
 }
 
 Vec4 AreaLight::get_direction(ShadeRec &sr){
-    sample_point = obj_ptr->sample();
     light_normal = obj_ptr->get_normal(sample_point);
+    sample_point = obj_ptr->sample();
     wi= sample_point - sr.hit_point;
     wi = normalize(wi);
 

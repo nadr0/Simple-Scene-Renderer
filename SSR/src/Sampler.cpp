@@ -99,3 +99,59 @@ Vec4 Sampler::sample_unit_square() {
 
 	return (samples[jump + shuffled_indices[jump + count++ % num_samples]]);
 }
+
+void Sampler::map_samples_to_disk(void){
+	int size = samples.size();
+	float r, phi;		// polar coordinates
+	Vec4 sp; 		// sample point on unit disk
+
+	disk_samples.reserve(size);
+
+	for (int j = 0; j < size; j++) {
+		 // map sample point to [-1, 1] X [-1,1]
+
+		sp[0] = 2.0 * samples[j].x() - 1.0;
+		sp[1] = 2.0 * samples[j].y() - 1.0;
+
+		if (sp.x() > -sp.y()) {			// sectors 1 and 2
+			if (sp.x() > sp.y()) {		// sector 1
+				r = sp.x();
+				phi = sp.y() / sp.x();
+			}
+			else {					// sector 2
+				r = sp.y();
+				phi = 2 - sp.x() / sp.y();
+			}
+		}
+		else {						// sectors 3 and 4
+			if (sp.x() < sp.y()) {		// sector 3
+				r = -sp.x();
+				phi = 4 + sp.y() / sp.x();
+			}
+			else {					// sector 4
+				r = -sp.y();
+				if (sp.y() != 0.0)	// avoid division by zero at origin
+					phi = 6 - sp.x() / sp.y();
+				else
+					phi  = 0.0;
+			}
+		}
+
+		phi *= PI / 4.0;
+
+		disk_samples[j][0] = r * cos(phi);
+		disk_samples[j][1] = r * sin(phi);
+	}
+
+	samples.erase(samples.begin(), samples.end());
+}
+
+Vec4 Sampler::sample_disk(void){
+
+	if (count % num_samples == 0){								// start of a new
+		jump = (rand() % num_sets) * num_samples;
+	}
+
+	return (disk_samples[jump + shuffled_indices[jump + count++ % num_samples]]);
+
+}

@@ -46,7 +46,7 @@ World::World()
 */
 void World::build(void){
     // Sampler
-    int numberOfSamples = 4;
+    int numberOfSamples = 16;
     vp.sampler_ptr = new MultiJitter(numberOfSamples);
     vp.num_samples = vp.sampler_ptr->num_samples;
 
@@ -58,14 +58,14 @@ void World::build(void){
     camera_ptr->compute_uvw();
 
     // Ray tracing method
-    tracer_ptr = new MultipleObjects(this);     /* Determine tracer */
-    // tracer_ptr = new AreaLighting(this);
+    // tracer_ptr = new MultipleObjects(this);     /* Determine tracer */
+    tracer_ptr = new AreaLighting(this);
     // tracer_ptr = new PathTrace(this);
 
     // Lighting
-    DirectionalLight * L1 = new DirectionalLight(Vec4(0.45,0.05,0.45), RGBColor(1.0,1.0,1.0),15.0);
+    // DirectionalLight * L1 = new DirectionalLight(Vec4(0.45,0.05,0.45), RGBColor(1.0,1.0,1.0),15.0);
     // PointLight * L1 = new PointLight(Vec4(0.0,10,10.0),RGBColor(1.0,1.0,1.0),15.0);
-    add_light(L1);
+    // add_light(L1);
 
 
     // height of the box.
@@ -76,17 +76,24 @@ void World::build(void){
     Vec4 r1_b = Vec4(12.5,0.0,0.0);
     Vec4 r1_n = Vec4(0.0,-1.0,0.0);
 
-    // Emissive * emissive_ptr = new Emissive();
-    // emissive_ptr->ls = 2.0;
+    Emissive * emissive_ptr = new Emissive();
+    emissive_ptr->ls = 120;// 2.0
     //
     // Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
     // myRectangleTop->material_ptr = emissive_ptr;
     // add_object(myRectangleTop);
-    //
-    // AreaLight * myAreaLight = new AreaLight();
-    // myAreaLight->obj_ptr = myRectangleTop;
-    // myAreaLight->material_ptr = emissive_ptr;
-    // add_light(myAreaLight);
+
+    Vec4 d1_c = Vec4(0.0,2.0,12.5);
+    Vec4 d1_n = Vec4(0.0,-1.0,0.0);
+    float d1_r = 1.0;
+    Disk * d1 = new Disk(d1_c, d1_n, d1_r);
+    d1->material_ptr = emissive_ptr;
+    add_object(d1);
+
+    AreaLight * myAreaLight = new AreaLight();
+    myAreaLight->obj_ptr = d1;
+    myAreaLight->material_ptr = emissive_ptr;
+    add_light(myAreaLight);
 
     MultiJitter * sampler_ptr = new MultiJitter(256);
     AmbientOccluder * myLight = new AmbientOccluder();
@@ -103,17 +110,6 @@ void World::build(void){
     s2->material_ptr->set_ka(0.25);
     s2->material_ptr->set_cd(RGBColor(1.0,0.0,0.0));
     // add_object(s2);
-
-
-    Vec4 d1_c = Vec4(0.0,1.0,12.5);
-    Vec4 d1_n = Vec4(0.0,0.0,1.0);
-    float d1_r = 1.0;
-    Disk * d1 = new Disk(d1_c, d1_n, d1_r);
-    d1->material_ptr = new Matte();
-    d1->material_ptr->set_kd(1.0);
-    d1->material_ptr->set_ka(0.0);
-    d1->material_ptr->set_cd(RGBColor(0.0,0.0,1.0));
-    add_object(d1);
 
     int s4_num_samples = 100;
     float s4_exp = 75;

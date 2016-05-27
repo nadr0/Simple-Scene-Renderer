@@ -44,6 +44,7 @@ RGBColor Matte::area_light_shade(ShadeRec & sr){
 
     for (int j = 0; j < num_lights; j++) {
         Vec4 wi = sr.w->lights[j]->get_direction(sr);
+
         float ndotwi = dot(sr.normal, wi);
 
         if (ndotwi > 0.0){
