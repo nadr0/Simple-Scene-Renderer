@@ -27,6 +27,7 @@ Features
     * Rectangle
     * Plane
     * Triangle
+    * Disk
 + Tracers
     * Basic (non whitted)
     * Whitted
