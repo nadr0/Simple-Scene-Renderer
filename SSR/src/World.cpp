@@ -77,21 +77,21 @@ void World::build(void){
     Vec4 r1_n = Vec4(0.0,-1.0,0.0);
 
     Emissive * emissive_ptr = new Emissive();
-    emissive_ptr->ls = 2.0;// 2.0
+    emissive_ptr->ls = 25.0;// 2.0
 
-    Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
-    myRectangleTop->material_ptr = emissive_ptr;
-    add_object(myRectangleTop);
+    // Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
+    // myRectangleTop->material_ptr = emissive_ptr;
+    // add_object(myRectangleTop);
 
-    // Vec4 d1_c = Vec4(0.0,25.0,12.5);
-    // Vec4 d1_n = Vec4(0.0,-1.0,0.0);
-    // float d1_r = 2.5;
-    // Disk * d1 = new Disk(d1_c, d1_n, d1_r);
-    // d1->material_ptr = emissive_ptr;
-    // add_object(d1);
+    Vec4 d1_c = Vec4(0.0,25.0,12.5);
+    Vec4 d1_n = Vec4(0.0,-1.0,0.0);
+    float d1_r = 2.5;
+    Disk * d1 = new Disk(d1_c, d1_n, d1_r);
+    d1->material_ptr = emissive_ptr;
+    add_object(d1);
 
     AreaLight * myAreaLight = new AreaLight();
-    myAreaLight->obj_ptr = myRectangleTop;
+    myAreaLight->obj_ptr = d1;
     myAreaLight->material_ptr = emissive_ptr;
     add_light(myAreaLight);
 
