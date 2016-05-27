@@ -17,6 +17,11 @@ Features
     * Matte
     * Phong
     * Reflective
+    * Glossy reflections
+    * Microfacet specular BRDF
+      * [Original Cook-Torrance Paper](http://www.cs.columbia.edu/~belhumeur/courses/appearance/cook-torrance.pdf)
+      * [Siggraph 2013, Physically Based Rendering course notes](http://blog.selfshadow.com/publications/s2013-shading-course/hoffman/s2013_pbs_physics_math_notes.pdf)
+      * [Implementation/Source Code](http://ruh.li/GraphicsCookTorrance.html)
 + Primitives 
     * Sphere
     * Rectangle
@@ -30,6 +35,7 @@ Features
     * Median split method
 + Fast Building of Orthonormal Basis
     * [Research paper](http://orbit.dtu.dk/files/57573287/onb_frisvad_jgt2012.pdf)
++ Smooth shaded triangles
     
 More To Come!
 =====
@@ -37,17 +43,11 @@ More To Come!
 - non linear projections (fish eye)
 - refraction
 - instancing
-- ~~glossy reflections~~
 - textures
 - ambient occlusion
-- ~~smooth shaded triangles~~
 - updated .obj reader
 - scene language
 - SAH BVH method
-- ~~Microfacet specular BRDF~~
-   * [Original Cook-Torrance Paper](http://www.cs.columbia.edu/~belhumeur/courses/appearance/cook-torrance.pdf)
-   * [Siggraph 2013, Physically Based Rendering course notes](http://blog.selfshadow.com/publications/s2013-shading-course/hoffman/s2013_pbs_physics_math_notes.pdf)
-   * [Implementation/Source Code](http://ruh.li/GraphicsCookTorrance.html)
 
 -----
 
