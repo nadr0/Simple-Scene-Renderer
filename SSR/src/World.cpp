@@ -27,6 +27,7 @@
 #include "AreaLighting.h"
 #include "PointLight.h"
 #include "GlossyReflector.h"
+#include "Disk.h"
 #include "AmbientOccluder.h"
 #include "stb_image_write.h"
 
@@ -34,8 +35,8 @@ using std::cout;
 using std::endl;
 
 World::World()
-    :   background_color(0.0, 0.0, 0.0)
-    // :   background_color(0.75, 0.75, 0.75) // 0.75 gray
+    // :   background_color(0.0, 0.0, 0.0)
+    :   background_color(0.75, 0.75, 0.75) // 0.75 gray
 {
     vp = Viewplane(512,512); // hres,vres
 }
@@ -45,7 +46,7 @@ World::World()
 */
 void World::build(void){
     // Sampler
-    int numberOfSamples = 128;
+    int numberOfSamples = 4;
     vp.sampler_ptr = new MultiJitter(numberOfSamples);
     vp.num_samples = vp.sampler_ptr->num_samples;
 
@@ -62,9 +63,9 @@ void World::build(void){
     // tracer_ptr = new PathTrace(this);
 
     // Lighting
-    // DirectionalLight * L1 = new DirectionalLight(Vec4(0.45,0.05,0.45), RGBColor(1.0,1.0,1.0),2.5);
+    DirectionalLight * L1 = new DirectionalLight(Vec4(0.45,0.05,0.45), RGBColor(1.0,1.0,1.0),15.0);
     // PointLight * L1 = new PointLight(Vec4(0.0,10,10.0),RGBColor(1.0,1.0,1.0),15.0);
-    // add_light(L1);
+    add_light(L1);
 
 
     // height of the box.
@@ -89,7 +90,7 @@ void World::build(void){
 
     MultiJitter * sampler_ptr = new MultiJitter(256);
     AmbientOccluder * myLight = new AmbientOccluder();
-    myLight->ls = 1.0;
+    myLight->ls = 0.0;
     myLight->color = white;
     myLight->set_sampler(sampler_ptr);
     ambient_ptr = myLight;
@@ -103,6 +104,16 @@ void World::build(void){
     s2->material_ptr->set_cd(RGBColor(1.0,0.0,0.0));
     // add_object(s2);
 
+
+    Vec4 d1_c = Vec4(0.0,1.0,12.5);
+    Vec4 d1_n = Vec4(0.0,0.0,1.0);
+    float d1_r = 1.0;
+    Disk * d1 = new Disk(d1_c, d1_n, d1_r);
+    d1->material_ptr = new Matte();
+    d1->material_ptr->set_kd(1.0);
+    d1->material_ptr->set_ka(0.0);
+    d1->material_ptr->set_cd(RGBColor(0.0,0.0,1.0));
+    add_object(d1);
 
     int s4_num_samples = 100;
     float s4_exp = 75;
@@ -127,8 +138,8 @@ void World::build(void){
     Rectangle * FLOOR = new Rectangle(floor_p,floor_a,floor_b,floor_n);
     FLOOR->material_ptr = new Matte();
     FLOOR->material_ptr->set_kd(1.0);
-    FLOOR->material_ptr->set_ka(0.25);
-    FLOOR->material_ptr->set_cd(white);
+    FLOOR->material_ptr->set_ka(0.0);
+    FLOOR->material_ptr->set_cd(RGBColor(1.0,0.0,0.0));
     add_object(FLOOR);
 
     // Left wall.

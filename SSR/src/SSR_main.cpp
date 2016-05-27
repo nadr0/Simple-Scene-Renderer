@@ -18,6 +18,7 @@ int main(){
     // Create World
     World world;
 
+/*
     // Meshes
    Mesh * COW = new Mesh(&world);
    char file_name[8] = "cow.obj";
@@ -32,7 +33,7 @@ int main(){
    COW->trianglesToWorld();
    COW->calculateNormalList();
    printf("%s Mesh Completed.\n", file_name);
-
+*/
     // Build Scene
     world.build();
 
