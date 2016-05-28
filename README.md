@@ -2,7 +2,7 @@
 
 A ray tracer built with C++. A lot of the code comes from *__Ray Tracing From The Ground Up__* -  [[site]](http://www.raytracegroundup.com/)
 
-Check out the wiki for more images [https://github.com/nadr0/Simple-Scene-Renderer/wiki](https://github.com/nadr0/Simple-Scene-Renderer/wiki)
+Check out the wiki for more images [https://github.com/nadr0/Simple-Scene-Renderer/wiki/Renders](https://github.com/nadr0/Simple-Scene-Renderer/wiki/Renders)
 
 Features
 -----
