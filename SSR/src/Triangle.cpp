@@ -68,8 +68,8 @@ bool Triangle::hit(Ray & ray, double & tmin, ShadeRec & sr){
         return (false);
 
     tmin 				= t;
-    // sr.normal 			= normal;
-    sr.normal           = interpolated_normal(beta,gamma);
+    sr.normal 			= normal;
+    // sr.normal           = interpolated_normal(beta,gamma);
     sr.local_hit_point 	= ray.o + t * ray.d;
 
     return (true);

@@ -5,9 +5,9 @@
 Lambertian::Lambertian(){
     kd = 1.0;
     cd = RGBColor(0.0,0.0,0.0);
-    int num_samples = 64;
-    sampler_ptr = new MultiJitter(num_samples);
-    sampler_ptr->map_samples_to_hemisphere(1);
+    // int num_samples = 64;
+    // sampler_ptr = new MultiJitter(num_samples);
+    // sampler_ptr->map_samples_to_hemisphere(1);
 }
 
 void Lambertian::set_kd(float _kd){

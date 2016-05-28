@@ -34,21 +34,29 @@ Mesh::Mesh(World * wptr){
  */
 void Mesh::trianglesToWorld(){
 
+    Face currentFace;
+
+    Vertex v0,v1,v2;
+    Vec4 V0,V1,V2;
+    Vec4 xaxis;
+    Vec4 yaxis;
+    Vec4 n;
+
     for(int i = 0; i < this->faces.size(); i++){
-        Face currentFace = this->faces[i];
+        currentFace = this->faces[i];
 
-        Vertex v0 = this->vertices[currentFace.i_0];
-        Vertex v1 = this->vertices[currentFace.i_1];
-        Vertex v2 = this->vertices[currentFace.i_2];
+        v0 = this->vertices[currentFace.i_0];
+        v1 = this->vertices[currentFace.i_1];
+        v2 = this->vertices[currentFace.i_2];
 
-        Vec4 V0 = SCALE*Vec4(v0.x, v0.y, v0.z) + offset;
-        Vec4 V1 = SCALE*Vec4(v1.x, v1.y, v1.z) + offset;
-        Vec4 V2 = SCALE*Vec4(v2.x, v2.y, v2.z) + offset;
+        V0 = SCALE*Vec4(v0.x, v0.y, v0.z) + offset;
+        V1 = SCALE*Vec4(v1.x, v1.y, v1.z) + offset;
+        V2 = SCALE*Vec4(v2.x, v2.y, v2.z) + offset;
 
-        Vec4 xaxis = V1 - V0;
-        Vec4 yaxis = V2 - V0;
+        xaxis = V1 - V0;
+        yaxis = V2 - V0;
 
-        Vec4 n = cross(xaxis, yaxis);
+        n = cross(xaxis, yaxis);
         n = normalize(n);
 
         Triangle * myTriangle = new Triangle(V0, V1, V2,n);
@@ -125,10 +133,10 @@ void Mesh::readObject(char * file_name){
             float x,y,z;
             fscanf(objFile, "%f %f %f\n", &x, &y, &z);
             Vertex  vert;
-            vert.x = x; vert.y = y; vert.z = z;
+            vert.x = x; vert.y = z; vert.z = -y;
 
-            if(y < minVALUE){
-                minVALUE = y;;
+            if(z < minVALUE){
+                minVALUE = z;
             }
 
             /* Store vertex*/
@@ -161,7 +169,8 @@ void Mesh::readObject(char * file_name){
         }
 
     }
-    // printf("%f\n", minVALUE);
+    printf("%f\n", minVALUE);
+    printf("%s\n", "Finished Reading Object");
     fclose(objFile);
 }
 
@@ -218,5 +227,5 @@ void Mesh::calculateNormalList(){
 
     }
 
-
+    printf("%s\n", "Normals Calculated");
 }
