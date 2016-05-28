@@ -67,7 +67,7 @@ void Mesh::trianglesToWorld(){
 
         myTriangle->material_ptr = new Matte();
         myTriangle->material_ptr->set_kd(1.0);
-        myTriangle->material_ptr->set_ka(0.25);
+        myTriangle->material_ptr->set_ka(0.50);
         myTriangle->material_ptr->set_cd(this->color);
         triangle_ptrs.push_back(myTriangle);
         this->wptr->add_object(myTriangle);
@@ -133,7 +133,8 @@ void Mesh::readObject(char * file_name){
             float x,y,z;
             fscanf(objFile, "%f %f %f\n", &x, &y, &z);
             Vertex  vert;
-            vert.x = x; vert.y = z; vert.z = -y;
+            // vert.x = x; vert.y = y; vert.z = z; // normal mesh
+            vert.x = x; vert.y = z; vert.z = -y; // dragon obj
 
             if(z < minVALUE){
                 minVALUE = z;
@@ -169,6 +170,7 @@ void Mesh::readObject(char * file_name){
         }
 
     }
+    printf("%lu\n", this->faces.size());
     printf("%f\n", minVALUE);
     printf("%s\n", "Finished Reading Object");
     fclose(objFile);

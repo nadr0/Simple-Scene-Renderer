@@ -21,7 +21,8 @@ Vec4 AmbientOccluder::get_direction(ShadeRec & sr){
 
 bool AmbientOccluder::in_shadow(Ray & ray, ShadeRec & sr){
     vector<GeometricObject *> tempObjs;
-    hitBBox(ray, sr.w->BVH_root, tempObjs);
+    BVH_TRAVERSE(ray,sr.w->flat_BVH,tempObjs);
+    // hitBBox(ray, sr.w->BVH_root, tempObjs);
     float t;
     int num_objects = tempObjs.size();
     for (int j = 0; j < num_objects; j++) {

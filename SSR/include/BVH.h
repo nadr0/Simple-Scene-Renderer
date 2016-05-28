@@ -2,7 +2,9 @@
 #define BVH_H_
 #include "GeometricObject.h"
 #include "Ray.h"
+#include "BVH_FLAT.h"
 #include "BBox.h"
+#include "Utility.h"
 
 class GeometricObject;
 
@@ -22,5 +24,7 @@ public:
     BVH();
     BVH(int maxLeafNodeSize);
     void buildBVH(vector<GeometricObject *> objs, int AXIS);
+    void flattenTree(vector<BVH_FLAT> & flat_arr, BVH * root ,int & counter);
+
 };
 #endif

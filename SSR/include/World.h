@@ -9,6 +9,7 @@
 #include "GeometricObject.h"
 #include "Camera.h"
 #include "Light.h"
+#include "BVH_FLAT.h"
 #include "BVH.h"
 
 class Viewplane;
@@ -31,6 +32,7 @@ public:
     Light * ambient_ptr;
 
     BVH * BVH_root;
+    vector<BVH_FLAT> flat_BVH;
 
     World();
     void build(void);

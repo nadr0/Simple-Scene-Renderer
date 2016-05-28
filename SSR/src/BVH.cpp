@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include "BVH.h"
+#include "BVH_FLAT.h"
 #include "BBox.h"
 #include "GeometricObject.h"
 #include "Utility.h"
@@ -189,5 +190,36 @@ void BVH::buildBVH(vector<GeometricObject *> objs, int AXIS){
 
     if(parent != 0 && bbox.maxZ > parent->bbox.maxZ){
         parent->bbox.maxZ = bbox.maxZ;
+    }
+}
+
+
+// Assuming that the BVH tree only has 1 geometric object per BVH leaf node
+void BVH::flattenTree(vector<BVH_FLAT> & flat_arr, BVH * root ,int & counter){
+
+    BVH_FLAT bvh_flat;
+    // offset of 0 is the base case
+    bvh_flat.offset = 0;
+    bvh_flat.bbox = root->bbox;
+    // means it doesn't have an object
+    bvh_flat.obj = nullptr;
+    root->index = counter;
+    counter++;
+    flat_arr.push_back(bvh_flat);
+
+    if(root->right == NULL && root->left == NULL){
+        flat_arr[root->index].obj = root->objects[0];
+    }
+
+    if(root->left != NULL){
+        flattenTree(flat_arr, root->left, counter);
+    }
+
+    if(root->right != NULL){
+        flat_arr[root->index].offset = counter;// - root->index;
+    }
+
+    if(root->right != NULL){
+        flattenTree(flat_arr, root->right, counter);
     }
 }

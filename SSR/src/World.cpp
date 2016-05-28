@@ -46,13 +46,13 @@ World::World()
 */
 void World::build(void){
     // Sampler
-    int numberOfSamples = 256;
+    int numberOfSamples = 1;
     vp.sampler_ptr = new MultiJitter(numberOfSamples);
     vp.num_samples = vp.sampler_ptr->num_samples;
 
     // Camera
     camera_ptr = new Pinhole;
-    camera_ptr->set_eye(0.0, 30.0, 70);
+    camera_ptr->set_eye(0.0, 12.5, 30);
     camera_ptr->set_lookat(0.0,2.5,0.0);
     camera_ptr->set_view_distance(350);
     camera_ptr->compute_uvw();
@@ -119,22 +119,22 @@ void World::build(void){
     s4->material_ptr->set_cd(RGBColor(0.95,0.64,0.54));
     // add_object(s4);
 
-    size_t numberOfSpheres = 5;
-    float radius = 3.5;
-    float offset = radius*3;
-    float initial_x = (numberOfSpheres-1)*offset/2;
-    float step = 1/(float)numberOfSpheres;
-    for (size_t i = 0; i < numberOfSpheres; i++) {
-        for (size_t j = 0; j < numberOfSpheres; j++) {
-            Vec4 current_position = Vec4(-initial_x+(offset*j),radius,(offset * i));
-            Sphere * current_sphere = new Sphere(current_position,radius);
-            current_sphere->material_ptr = new Matte();
-            current_sphere->material_ptr->set_kd(1.0);
-            current_sphere->material_ptr->set_ka(0.90);
-            current_sphere->material_ptr->set_cd(RGBColor((j*step)+step,(i*step)+step,0.2));
-            add_object(current_sphere);
-        }
-    }
+    // size_t numberOfSpheres = 5;
+    // float radius = 3.5;
+    // float offset = radius*3;
+    // float initial_x = (numberOfSpheres-1)*offset/2;
+    // float step = 1/(float)numberOfSpheres;
+    // for (size_t i = 0; i < numberOfSpheres; i++) {
+    //     for (size_t j = 0; j < numberOfSpheres; j++) {
+    //         Vec4 current_position = Vec4(-initial_x+(offset*j),radius,(offset * i));
+    //         Sphere * current_sphere = new Sphere(current_position,radius);
+    //         current_sphere->material_ptr = new Matte();
+    //         current_sphere->material_ptr->set_kd(1.0);
+    //         current_sphere->material_ptr->set_ka(0.90);
+    //         current_sphere->material_ptr->set_cd(RGBColor((j*step)+step,(i*step)+step,0.2));
+    //         add_object(current_sphere);
+    //     }
+    // }
 
 
     // My cornell box
@@ -242,7 +242,8 @@ void World::add_light(Light * light_ptr){
 
 ShadeRec World::hit_bare_bones_objects(Ray & ray){
     vector<GeometricObject *> tempObjs;
-    hitBBox(ray, BVH_root, tempObjs);
+    BVH_TRAVERSE(ray,flat_BVH,tempObjs);
+    // hitBBox(ray, BVH_root, tempObjs);
     ShadeRec sr(this);
     double t;
     double tmin = std::numeric_limits<double>::max();
