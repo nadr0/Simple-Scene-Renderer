@@ -202,13 +202,13 @@ void BVH::flattenTree(vector<BVH_FLAT> & flat_arr, BVH * root ,int & counter){
     bvh_flat.offset = 0;
     bvh_flat.bbox = root->bbox;
     // means it doesn't have an object
-    bvh_flat.obj = nullptr;
+    bvh_flat.obj = -1;
     root->index = counter;
     counter++;
     flat_arr.push_back(bvh_flat);
 
     if(root->right == NULL && root->left == NULL){
-        flat_arr[root->index].obj = root->objects[0];
+        flat_arr[root->index].obj = root->objects[0]->_index;
     }
 
     if(root->left != NULL){
@@ -216,7 +216,7 @@ void BVH::flattenTree(vector<BVH_FLAT> & flat_arr, BVH * root ,int & counter){
     }
 
     if(root->right != NULL){
-        flat_arr[root->index].offset = counter;// - root->index;
+        flat_arr[root->index].offset = counter;
     }
 
     if(root->right != NULL){

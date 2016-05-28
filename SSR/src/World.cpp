@@ -234,6 +234,7 @@ void World::draw_scene(void){
 
 void World::add_object(GeometricObject * object_ptr){
     objects.push_back(object_ptr);
+    object_ptr->_index = objects.size() - 1;
 }
 
 void World::add_light(Light * light_ptr){
@@ -242,7 +243,7 @@ void World::add_light(Light * light_ptr){
 
 ShadeRec World::hit_bare_bones_objects(Ray & ray){
     vector<GeometricObject *> tempObjs;
-    BVH_TRAVERSE(ray,flat_BVH,tempObjs);
+    BVH_TRAVERSE(ray,flat_BVH,tempObjs,this);
     // hitBBox(ray, BVH_root, tempObjs);
     ShadeRec sr(this);
     double t;

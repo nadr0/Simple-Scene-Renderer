@@ -8,8 +8,8 @@ class GeometricObject;
 
 struct BVH_FLAT{
     BBox bbox;
-    unsigned int offset;
-    GeometricObject * obj;
+    // GeometricObject * obj;
+    uint32_t obj;
+    uint32_t offset;
 };
-
 #endif

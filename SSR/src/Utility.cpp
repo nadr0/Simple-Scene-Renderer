@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stack>
 #include <iostream>
+#include "World.h"
 #include "Utility.h"
 #include "RGBColor.h"
 using std::cout;
@@ -29,7 +30,7 @@ void hitBBox(Ray & ray, BVH * root, vector<GeometricObject *> & possible_hits){
 
 }
 
-void BVH_TRAVERSE(Ray & ray,vector<BVH_FLAT> & flat_arr,vector<GeometricObject *> & possible_hits){
+void BVH_TRAVERSE(Ray & ray,vector<BVH_FLAT> & flat_arr,vector<GeometricObject *> & possible_hits, World * w_ptr){
     unsigned int nodeNum = 0;
 
     // Todo stack for further testing for intersections
@@ -44,9 +45,9 @@ void BVH_TRAVERSE(Ray & ray,vector<BVH_FLAT> & flat_arr,vector<GeometricObject *
         // Check if ray hits box
         if(curr_object.bbox.intersectRay(ray)){
             // Node has an object to test intersection with
-            if(curr_object.obj != nullptr){
+            if(curr_object.obj != -1){
 
-                possible_hits.push_back(curr_object.obj);
+                possible_hits.push_back(w_ptr->objects[curr_object.obj]);
 
                 if(todo.empty()){
                     break;

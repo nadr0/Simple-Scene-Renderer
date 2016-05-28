@@ -7,12 +7,13 @@
 #include "BBox.h"
 #include "GeometricObject.h"
 #include "BVH.h"
+#include "World.h"
 
 class GeometricObject;
 class BVH;
 
 void hitBBox(Ray & ray, BVH * root, vector<GeometricObject *> & possible_hits);
-void BVH_TRAVERSE(Ray & ray,vector<BVH_FLAT> & flat_arr,vector<GeometricObject *> & possible_hits);
+void BVH_TRAVERSE(Ray & ray,vector<BVH_FLAT> & flat_arr,vector<GeometricObject *> & possible_hits, World * w_ptr);
 void bboxes(BVH * root);
 
 double length_of_V(Vec4 v);

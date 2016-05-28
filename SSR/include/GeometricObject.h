@@ -22,6 +22,7 @@ public:
     virtual Vec4 sample();
     virtual float pdf(ShadeRec & sr);
     virtual Vec4 get_normal(Vec4 p);
-    bool light; 
+    bool light;
+    uint32_t _index;
 };
 #endif

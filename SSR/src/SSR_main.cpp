@@ -15,6 +15,7 @@ using std::endl;
 int main(){
     system("clear");
 
+    printf("%lu\n", sizeof(BVH_FLAT));
     // Create World
     World world;
 
@@ -39,6 +40,7 @@ int main(){
 
     int GLOBAL_COUNT = 0;
     world.BVH_root->flattenTree(world.flat_BVH,world.BVH_root,GLOBAL_COUNT);
+
 
     // Timer
     std::clock_t start;
