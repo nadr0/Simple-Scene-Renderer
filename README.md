@@ -56,37 +56,37 @@ Rendered Images
 ----
 Images below are created from path tracing with diffuse interreflections. 
 
-![alt text](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/1sample.png "")
+![alt text](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/images/1sample.png "")
 
 SPP|Image Size|Render Time|# Primitives
 --- | --- | --- | ---
 1|512x512|0.3 sec | 8
 
-![alt text](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/2663%2C10k.png "")
+![alt text](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/images/2663%2C10k.png "")
 
 SPP|Image Size|Render Time|# Primitives
 --- | --- | --- | ---
 10,000 |512x512| 44 mins | 8
 
-![alt text](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/32789%2C100k.png "")
+![alt text](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/images/32789%2C100k.png "")
 
 SPP|Image Size|Render Time|# Primitives
 --- | --- | --- | ---
 100,000 |512x512| 9.1 hours | 8
 
-![alt text](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/24733%2C1k.png "")
+![alt text](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/images/24733%2C1k.png "")
 
 SPP|Image Size|Render Time|# Primitives
 --- | --- | --- | ---
 1,000 |512x512| 6.8 hours | 5811
 
-![alt test](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/9701%2C10k.png "")
+![alt test](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/images/9701%2C10k.png "")
 
 SPP|Image Size|Render Time|# Primitives
 --- | --- | --- | ---
 10,000|512x512| 2.7 hours | 8
 
-![alt test](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/8193%2C10k.png "")
+![alt test](https://github.com/nadr0/Simple-Scene-Renderer/blob/master/SSR/images/8193%2C10k.png "")
 
 SPP|Image Size|Render Time|# Primitives | Depth
 --- | --- | --- | --- | ---
