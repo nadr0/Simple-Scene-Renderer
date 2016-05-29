@@ -170,7 +170,6 @@ void Mesh::readObject(char * file_name){
         }
 
     }
-    printf("%lu\n", this->faces.size());
     printf("%f\n", minVALUE);
     printf("%s\n", "Finished Reading Object");
     fclose(objFile);
