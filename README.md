@@ -45,10 +45,13 @@ More To Come!
 - refraction
 - instancing
 - textures
-- ambient occlusion
+   * texture mapping
+   * procedural textures
 - updated .obj reader
 - scene language
 - SAH BVH method
+- bump mapping
+- environment mapping (HDR)
 
 -----
 
