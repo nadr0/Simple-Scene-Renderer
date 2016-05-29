@@ -32,6 +32,7 @@ Rectangle::Rectangle(Vec4 p0, Vec4 _a, Vec4 _b, Vec4 n){
     kEpsilon = 0.001;
     compute_bbox();
     light = false;
+    CENTER_POSITION = p0;
 }
 
 void Rectangle::compute_bbox(){

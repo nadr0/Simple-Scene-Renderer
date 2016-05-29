@@ -36,6 +36,17 @@ void BVH_TRAVERSE(Ray & ray,vector<BVH_FLAT> & flat_arr,vector<GeometricObject *
     // Todo stack for further testing for intersections
     std::stack<unsigned int> todo;
 
+    uint32_t dirIsNeg[3];
+    Vec4 invDir;
+
+    invDir[0] = 1/ray.d.x();
+    invDir[1] = 1/ray.d.y();
+    invDir[2] = 1/ray.d.z();
+
+    dirIsNeg[0] = invDir.x() < 0;
+    dirIsNeg[1] = invDir.y() < 0;
+    dirIsNeg[2] = invDir.z() < 0;
+
     // Traverse the array
     while(true){
 
@@ -43,7 +54,8 @@ void BVH_TRAVERSE(Ray & ray,vector<BVH_FLAT> & flat_arr,vector<GeometricObject *
         BVH_FLAT curr_object = flat_arr[nodeNum];
 
         // Check if ray hits box
-        if(curr_object.bbox.intersectRay(ray)){
+        // if(curr_object.bbox.intersectRay(ray)){
+        if(curr_object.bbox.intersectP(ray, invDir, dirIsNeg)){
             // Node has an object to test intersection with
             if(curr_object.obj != -1){
 
@@ -60,7 +72,7 @@ void BVH_TRAVERSE(Ray & ray,vector<BVH_FLAT> & flat_arr,vector<GeometricObject *
                 // Put far BVH node on todo stack
                 todo.push(curr_object.offset);
                 // Advance to near node
-                nodeNum = nodeNum + 1;
+                nodeNum++;
             }
         }else{
             if(todo.empty()){

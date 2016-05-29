@@ -19,22 +19,21 @@ int main(){
     World world;
 
     Mesh * COW = new Mesh(&world);
-    char file_name[11] = "buddha.obj";
+    char file_name[11] = "dragon.obj";
     COW->readObject(file_name);
-    COW->SCALE = 8.0;
+    COW->SCALE = 5.0;
     // COW->SCALE = 2.0;
     // COW->SCALE = 1.0;
     // float minValue = -0.319838 * COW->SCALE; // COW
     // float minValue = -0.033310 * 75; // BUNNY
     // float minValue = -0.991233 * COW->SCALE;
-    // float minValue =  -0.705289 * COW->SCALE;
-    float minValue = -1.0 * COW->SCALE;
+    float minValue =  -0.705289 * COW->SCALE;// dragon
     COW->offset = Vec4(0.0,-minValue, 12.5);
     COW->color = RGBColor(1.0,1.0,1.0);
     COW->trianglesToWorld();
     COW->calculateNormalList();
     printf("%s Mesh Completed.\n", file_name);
-
+    
     // Build Scene
     world.build();
 

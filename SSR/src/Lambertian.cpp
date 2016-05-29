@@ -37,12 +37,6 @@ RGBColor Lambertian::sample_f(const ShadeRec& sr, const Vec4& wo, Vec4& wi, floa
     v = normalize(v);
     Vec4 u = cross(v,w);
 
-    // Building an Orthonormal Basis from a 3D Unit Vector Without Normalization
-    // float a = 1.0f/(1.0f + w.z());
-    // float b = -w.x()*w.y()*a;
-    // Vec4 u = Vec4(b,1.0f - w.y()*w.y()*a, -w.y());
-    // Vec4 v = Vec4(1.0f - w.x()*w.x()*a, b, -w.x());
-
     Vec4 sp = sampler_ptr->sample_hemisphere();
     wi = sp.x() * u + sp.y() * v + sp.z() * w;
     wi = normalize(wi);

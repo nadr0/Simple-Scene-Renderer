@@ -103,3 +103,31 @@ bool BBox::intersectRay(Ray & ray){
 
     return (t0 < t1 && t1 > 0.0001);
 }
+
+
+bool BBox::intersectP(Ray & ray, Vec4 & invDir, uint32_t dirIsNeg[3]){
+    float tmin, tmax, tymin, tymax, tzmin, tzmax;
+    Vec4 bounds[2];
+    bounds[0] = Vec4(minX, minY, minZ);
+    bounds[1] = Vec4(maxX, maxY, maxZ);
+
+    tmin = (bounds[dirIsNeg[0]].x() - ray.o.x()) * invDir.x();
+    tmax = (bounds[1-dirIsNeg[0]].x() - ray.o.x()) * invDir.x();
+    tymin = (bounds[dirIsNeg[1]].y() - ray.o.y()) * invDir.y();
+    tymax = (bounds[1-dirIsNeg[1]].y() - ray.o.y()) * invDir.y();
+    if ( (tmin > tymax) || (tymin > tmax) )
+        return false;
+    if (tymin > tmin)
+        tmin = tymin;
+    if (tymax < tmax)
+        tmax = tymax;
+        tzmin = (bounds[dirIsNeg[2]].z() - ray.o.z()) * invDir.z();
+        tzmax = (bounds[1-dirIsNeg[2]].z() - ray.o.z()) * invDir.z();
+    if ( (tmin > tzmax) || (tzmin > tmax) )
+        return false;
+    if (tzmin > tmin)
+        tmin = tzmin;
+    if (tzmax < tmax)
+        tmax = tzmax;
+    return ( (tmin < INFINITY) && (tmax > 0.f) );
+}
