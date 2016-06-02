@@ -52,35 +52,35 @@ void World::build(void){
 
     // Camera
     camera_ptr = new Pinhole;
-    camera_ptr->set_eye(0.0, 12.5, 30);
+    camera_ptr->set_eye(0.0, 10.0, 25);
     camera_ptr->set_lookat(0.0,2.5,0.0);
     camera_ptr->set_view_distance(350);
     camera_ptr->compute_uvw();
 
     // Ray tracing method
-    tracer_ptr = new MultipleObjects(this);     /* Determine tracer */
-    // tracer_ptr = new AreaLighting(this);
+    // tracer_ptr = new MultipleObjects(this);     /* Determine tracer */
+    tracer_ptr = new AreaLighting(this);
     // tracer_ptr = new PathTrace(this);
 
     // Lighting
-    // DirectionalLight * L1 = new DirectionalLight(Vec4(0.45,0.05,0.45), RGBColor(1.0,1.0,1.0),2.0);
+    // DirectionalLight * L1 = new DirectionalLight(Vec4(0.45,0.45,0.45), RGBColor(1.0,1.0,1.0),2.0);
     // PointLight * L1 =s new PointLight(Vec4(0.0,10,10.0),RGBColor(1.0,1.0,1.0),15.0);
     // add_light(L1);
 
     // height of the box.
     int HEIGHT = 25.0;
 
-    Vec4 r1_p = Vec4(-6.25,25.0,6.25);
-    Vec4 r1_a = Vec4(0.0,0.0,12.5);
-    Vec4 r1_b = Vec4(12.5,0.0,0.0);
+    Vec4 r1_p = Vec4(-12.5,35.0,-12.5);
+    Vec4 r1_a = Vec4(0.0,0.0,25.0);
+    Vec4 r1_b = Vec4(25.0,0.0,0.0);
     Vec4 r1_n = Vec4(0.0,-1.0,0.0);
 
-    // Emissive * emissive_ptr = new Emissive();
-    // emissive_ptr->ls = 25.0;// 2.0
+    Emissive * emissive_ptr = new Emissive();
+    emissive_ptr->ls = 1.0;// 2.0
 
-    // Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
-    // myRectangleTop->material_ptr = emissive_ptr;
-    // add_object(myRectangleTop);
+    Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
+    myRectangleTop->material_ptr = emissive_ptr;
+    add_object(myRectangleTop);
     //
     // Vec4 d1_c = Vec4(0.0,25.0,12.5);
     // Vec4 d1_n = Vec4(0.0,-1.0,0.0);
@@ -88,11 +88,11 @@ void World::build(void){
     // Disk * d1 = new Disk(d1_c, d1_n, d1_r);
     // d1->material_ptr = emissive_ptr;
     // add_object(d1);
-    //
-    // AreaLight * myAreaLight = new AreaLight();
-    // myAreaLight->obj_ptr = d1;
-    // myAreaLight->material_ptr = emissive_ptr;
-    // add_light(myAreaLight);
+    
+    AreaLight * myAreaLight = new AreaLight();
+    myAreaLight->obj_ptr = myRectangleTop;
+    myAreaLight->material_ptr = emissive_ptr;
+    add_light(myAreaLight);
 
     MultiJitter * sampler_ptr = new MultiJitter(256);
     AmbientOccluder * myLight = new AmbientOccluder();
@@ -124,13 +124,17 @@ void World::build(void){
     // float offset = radius*3;
     // float initial_x = (numberOfSpheres-1)*offset/2;
     // float step = 1/(float)numberOfSpheres;
+    // float totalSpheres = numberOfSpheres * numberOfSpheres;
+    // float totalStep = 1/totalSpheres;
     // for (size_t i = 0; i < numberOfSpheres; i++) {
     //     for (size_t j = 0; j < numberOfSpheres; j++) {
     //         Vec4 current_position = Vec4(-initial_x+(offset*j),radius,(offset * i));
     //         Sphere * current_sphere = new Sphere(current_position,radius);
-    //         current_sphere->material_ptr = new Matte();
-    //         current_sphere->material_ptr->set_kd(1.0);
-    //         current_sphere->material_ptr->set_ka(0.90);
+    //         Microfacet * current_mat = new Microfacet();
+    //         current_mat->specular_brdf->roughnessValue = ((i+j)*totalStep + totalStep);
+    //         current_sphere->material_ptr = current_mat;
+    //         current_sphere->material_ptr->set_kd(0.75);
+    //         current_sphere->material_ptr->set_ka(0.0);
     //         current_sphere->material_ptr->set_cd(RGBColor((j*step)+step,(i*step)+step,0.2));
     //         add_object(current_sphere);
     //     }

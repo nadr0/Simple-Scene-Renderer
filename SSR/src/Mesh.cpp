@@ -65,10 +65,16 @@ void Mesh::trianglesToWorld(){
         myTriangle->face[1] = currentFace.i_1;
         myTriangle->face[2] = currentFace.i_2;
 
-        myTriangle->material_ptr = new Matte();
-        myTriangle->material_ptr->set_kd(1.0);
-        myTriangle->material_ptr->set_ka(0.50);
-        myTriangle->material_ptr->set_cd(this->color);
+        Microfacet * current_mat = new Microfacet();
+        current_mat->specular_brdf->roughnessValue = (0.15);
+        myTriangle->material_ptr = current_mat;
+        myTriangle->material_ptr->set_kd(0.75);
+        myTriangle->material_ptr->set_ka(0.0);
+        myTriangle->material_ptr->set_cd(RGBColor(1.00,0.86,0.57));
+        // myTriangle->material_ptr = new Matte();
+        // myTriangle->material_ptr->set_kd(1.0);
+        // myTriangle->material_ptr->set_ka(0.50);
+        // myTriangle->material_ptr->set_cd(this->color);
         triangle_ptrs.push_back(myTriangle);
         this->wptr->add_object(myTriangle);
     }

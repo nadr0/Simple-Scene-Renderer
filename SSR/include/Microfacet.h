@@ -18,6 +18,8 @@ public:
 
     Microfacet();
     virtual RGBColor area_light_shade(ShadeRec& sr);
+    virtual RGBColor shade(ShadeRec & sr);
+
     ~Microfacet();
 };
 

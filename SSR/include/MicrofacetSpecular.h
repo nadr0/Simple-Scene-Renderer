@@ -22,5 +22,7 @@ public:
     float ks;
     RGBColor cs;
     RGBColor Fo;
+    float roughnessValue; // 0 : smooth, 1: rough
+
 };
 #endif

@@ -8,13 +8,52 @@ using std::cout;
 using std::endl;
 
 MicrofacetSpecular::MicrofacetSpecular(){
-    ks = 0.1;
+    ks = 0.25;
     cs = RGBColor(1.0,1.0,1.0);
     Fo = RGBColor(1.00,0.86,0.57);
+    roughnessValue = 0.15;
 }
 
 RGBColor MicrofacetSpecular::f(ShadeRec & sr, Vec4 & wo, Vec4 & wi){
-    return RGBColor(0.0,0.0,0.0);
+
+    wi = normalize(wi);
+    wo = normalize(wo);
+
+    // half vector
+    // incoming light and view direction, half vector between them
+    Vec4 h = normalize(wi + wo);
+
+
+    // Dot products
+    float ldoth = dot(wi, h);
+    float ndoth = dot(sr.normal, h);
+    float ndotv = dot(sr.normal, wo);
+    float vdoth = dot(wo,h);
+    float ndotl = dot(sr.normal, wi);
+
+    float mSquared = roughnessValue * roughnessValue;
+
+    // Geometric Attenuation
+    float NH2 = 2.0 * ndoth;
+    float g1 = (NH2 * ndotv)/vdoth;
+    float g2 = (NH2 * ndotl)/vdoth;
+    float GeoAtt = fmin(1.0,fmin(g1,g2));
+
+    // Beckmann distribution function
+    float r1 = 1 / (4.0 * mSquared * pow(ndoth,4.0));
+    float r2 = (ndoth * ndoth - 1.0)/(mSquared * ndoth * ndoth);
+    float roughness = r1 * exp(r2);
+
+    // Fresnel schlick approximation
+    RGBColor RGBFresnel = Fo + (RGBColor(1.0,1.0,1.0) - Fo) * pow(1.0 - vdoth, 5.0);
+    // float fresnel = pow(1.0 - vdoth, 5.0);
+    // fresnel *= (1.0 - Fo);
+    // fresnel += Fo;
+
+    // float brdf = fresnel * GeoAtt * roughness / (ndotv * ndotl * PI);
+    RGBColor brdf = RGBFresnel * GeoAtt * roughness / (ndotv * ndotl * PI);
+
+    return (cs * ks * brdf);
 }
 
 // http://ruh.li/GraphicsCookTorrance.html
@@ -23,7 +62,6 @@ RGBColor MicrofacetSpecular::sample_f(ShadeRec& sr, Vec4 & wo, Vec4 & wi){
     wi = normalize(wi);
     wo = normalize(wo);
 
-    float roughnessValue = 0.15; // 0 : smooth, 1: rough
     // half vector
     // incoming light and view direction, half vector between them
     Vec4 h = normalize(wi + wo);

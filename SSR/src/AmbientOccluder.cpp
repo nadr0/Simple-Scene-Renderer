@@ -37,14 +37,14 @@ bool AmbientOccluder::in_shadow(Ray & ray, ShadeRec & sr){
 
 RGBColor AmbientOccluder::L(ShadeRec & sr){
     w = sr.normal;
-    // v = cross(w,Vec4(0.0072,1.0,0.0034));
-    // v = normalize(v);
-    // u = cross(v,w);
+    v = cross(w,Vec4(0.0072,1.0,0.0034));
+    v = normalize(v);
+    u = cross(v,w);
     // Building an Orthonormal Basis from a 3D Unit Vector Without Normalization
-    float a = 1.0f/(1.0f + w.z());
-    float b = -w.x()*w.y()*a;
-    u = Vec4(b,1.0f - w.y()*w.y()*a, -w.y());
-    v = Vec4(1.0f - w.x()*w.x()*a, b, -w.x());
+    // float a = 1.0f/(1.0f + w.z());
+    // float b = -w.x()*w.y()*a;
+    // u = Vec4(b,1.0f - w.y()*w.y()*a, -w.y());
+    // v = Vec4(1.0f - w.x()*w.x()*a, b, -w.x());
 
     Ray shadow_ray;
     shadow_ray.o = sr.hit_point;

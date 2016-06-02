@@ -17,7 +17,8 @@ int main(){
 
     // Create World
     World world;
-
+    
+    
     Mesh * COW = new Mesh(&world);
     char file_name[11] = "dragon.obj";
     COW->readObject(file_name);
@@ -28,12 +29,14 @@ int main(){
     // float minValue = -0.033310 * 75; // BUNNY
     // float minValue = -0.991233 * COW->SCALE;
     float minValue =  -0.705289 * COW->SCALE;// dragon
+    // float minValue = -0.379481 * COW->SCALE; // armadillo
     COW->offset = Vec4(0.0,-minValue, 12.5);
     COW->color = RGBColor(1.0,1.0,1.0);
     COW->trianglesToWorld();
     COW->calculateNormalList();
     printf("%s Mesh Completed.\n", file_name);
     
+
     // Build Scene
     world.build();
 
