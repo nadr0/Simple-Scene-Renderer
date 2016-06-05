@@ -30,11 +30,14 @@ public:
     vector<Face> faces; //  faces for the mesh
     vector< vector<int> >  faceList; // stores the faces adjacent to a vertex
     vector<Vec4> perVertexNormals; // vertex normals
+    vector<Vertex> vertex_texture_coords;
+    vector<Vertex> vertex_normals;
     vector<Triangle *> triangle_ptrs; // vertex normals
     World * wptr;
     Mesh();
     Mesh(World * wptr);
 
+    int FILE_TYPE;
     Vec4 offset;
     float SCALE;
     RGBColor color;
@@ -42,5 +45,6 @@ public:
     void readObject(char * fileName); //read the file to populate the vectors
     void trianglesToWorld();
     void calculateNormalList();
+    void determineFileType(char *);
 };
 #endif

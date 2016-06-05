@@ -21,6 +21,7 @@ int main(){
     
     Mesh * COW = new Mesh(&world);
     char file_name[11] = "dragon.obj";
+    COW->determineFileType(file_name);
     COW->readObject(file_name);
     COW->SCALE = 5.0;
     // COW->SCALE = 2.0;

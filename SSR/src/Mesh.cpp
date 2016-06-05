@@ -16,12 +16,14 @@ Mesh::Mesh(){
     this->wptr = nullptr;
     this->offset = Vec4(0.0,0.0,0.0);
     this->SCALE = 1;
+    FILE_TYPE = -1;
 }
 
 Mesh::Mesh(World * wptr){
     this->wptr = wptr;
     this->offset = Vec4(0.0,0.0,0.0);
     this->SCALE = 1;
+    FILE_TYPE = -1;
 }
 /*
  Name: trianglesToWorld
@@ -92,91 +94,106 @@ void Mesh::readObject(char * file_name){
     FILE * objFile;
     objFile = fopen(file_name, "r");
 
-    float minVALUE = std::numeric_limits<float>::max();
-
-    int vertices = 0;
-    int faces = 0;
+    int vertex_index = 0;
+    int face_index = 0;
 
     /* Blank vertex for offsetting*/
-    Vertex Off_Set_Vertex;
-
-    Off_Set_Vertex.x = 0;
-    Off_Set_Vertex.y = 0;
-    Off_Set_Vertex.z = 0;
-
-    /* Offset of the vertex array because verts start at 1*/
-    this->vertices.push_back(Off_Set_Vertex);
+    Vertex OFF_SET_VERTEX;
+    vertices.push_back(OFF_SET_VERTEX);
+    vertex_texture_coords.push_back(OFF_SET_VERTEX);
+    vertex_normals.push_back(OFF_SET_VERTEX);
 
     /* Offset for the faceLast since the vertices start counting at 1*/
-    vector<int> list_Off_Set;
-    faceList.push_back(list_Off_Set);
+    vector<int> OFF_SET_FACELIST;
+    faceList.push_back(OFF_SET_FACELIST);
 
-    /* Offset for the perVertexNormals since them vertices start counting at 1*/
-    Vec4 normal_Off_Set;
-    perVertexNormals.push_back(normal_Off_Set);
-
-
+    size_t something;
     while (1){
+        char line[128];
 
-        char lineHeader[128];
         /* Read the first word of the line*/
-        int res = fscanf(objFile, "%s", lineHeader);
+        int res = fscanf(objFile, "%s", line);
 
         /* Stop at the end of the file*/
         if (res == EOF)
             break;
 
-        /* Read in the vertices*/
-        if (strcmp(lineHeader, "v") == 0){
-            /* Add a facelist for every vertex read in*/
-            vector<int> list;
-            faceList.push_back(list);
 
-            /* Count verts*/
-            vertices++;
+        if (strcmp(line, "v") == 0){
+            // Vertex
+            vector<int> vertex_faceList;
+            faceList.push_back(vertex_faceList);
 
-            /* Read and create vertex*/
+            vertex_index++;
             float x,y,z;
-            fscanf(objFile, "%f %f %f\n", &x, &y, &z);
-            Vertex  vert;
-            // vert.x = x; vert.y = y; vert.z = z; // normal mesh
-            vert.x = x; vert.y = z; vert.z = -y; // dragon obj
+            fscanf(objFile,"%f %f %f\n", &x, &y, &z);
 
-            if(z < minVALUE){
-                minVALUE = z;
+
+            Vertex current_vertex;
+            current_vertex.x = x;
+            current_vertex.y = y;
+            current_vertex.z = z;
+
+            vertices.push_back(current_vertex);
+        }
+        else if(strcmp(line, "vt") == 0){
+            // Vertex Texture Coodinates
+            float u,v;
+            fscanf(objFile,"%f %f\n", &u, &v);
+            Vertex current_vertex_tex;
+            current_vertex_tex.x = u;
+            current_vertex_tex.y = v;
+            current_vertex_tex.z = 0.0;
+
+            vertex_texture_coords.push_back(current_vertex_tex);
+        }
+        else if(strcmp(line, "vn") == 0){
+            // Vertex Normal
+            float x,y,z;
+            fscanf(objFile,"%f %f %f\n", &x, &y, &z);
+            Vertex current_vertex_normal;
+            current_vertex_normal.x = x;
+            current_vertex_normal.y = y;
+            current_vertex_normal.z = z;
+
+            vertex_normals.push_back(current_vertex_normal);
+        }
+        else if (strcmp(line, "f") == 0){
+            face_index++;
+
+            int v0, v1, v2;
+            int vn0, vn1, vn2;
+            int vt0, vt1, vt2;
+            int vars_set = -1;
+
+            if(FILE_TYPE == 0 ){
+                vars_set = fscanf(objFile,"%d %d %d\n",&v0,&v1,&v2);
+            }else if(FILE_TYPE == 1){
+                // Type : 1 = f 1// 2// 3//
+                vars_set = fscanf(objFile,"%d// %d// %d//\n",&v0,&v1,&v2);
+            }else if(FILE_TYPE == 2){
+                // Type : 2 = f 1/1/ 2/2/ 3/3/ 
+                vars_set = fscanf(objFile,"%d/%d/ %d/%d/ %d/%d/\n", &v0,&vt0,&v1,&vt1,&v2,&vt2);
+            }else if(FILE_TYPE == 3){
+                // Type : 3 = f 1//1 2//2 3//3
+                vars_set = fscanf(objFile,"%d//%d %d//%d %d//%d\n", &v0,&vn0,&v1,&vn1,&v2,&vn2);
+            }else if(FILE_TYPE == 3){
+                // Type : 4 = f 1/1/1 2/2/2 3/3/3
+                vars_set = fscanf(objFile,"%d/%d/%d %d/%d/%d %d/%d/%d\n", &v0,&vt0,&vn0,&v1,&vt1,&vn1,&v2,&vt2,&vn2);               
+
             }
 
-            /* Store vertex*/
-            this->vertices.push_back(vert);
-        }
+            faceList[v0].push_back(face_index);
+            faceList[v1].push_back(face_index);
+            faceList[v2].push_back(face_index);
 
-        /* Read in the faces*/
-        if (strcmp(lineHeader, "f") == 0){
-            faces++;
-            /* Read face*/
-            int x, y, z;
-            fscanf(objFile, "%i %i %i\n", &x, &y, &z);
-
-            /*
-             -----------------------------------------
-             THIS IS FOR PER VERTEX NORMAL CALCUATIONS
-             -----------------------------------------
-             Index the vertex with what line of face it is connected to
-             _faces[0]  = f 1 2 3 = _verts[1]..2..3
-             */
-            faceList[x].push_back(faces);
-            faceList[y].push_back(faces);
-            faceList[z].push_back(faces);
-
-            /* Create face*/
-            Face f;
-            f.i_0 = x; f.i_1 = y; f.i_2 = z;
-            /* Store face*/
-            this->faces.push_back(f);
-        }
-
+            Face current_face;
+            current_face.i_0 = v0;
+            current_face.i_1 = v1;
+            current_face.i_2 = v2;
+            faces.push_back(current_face);
+         }
     }
-    printf("%f\n", minVALUE);
     printf("%s\n", "Finished Reading Object");
     fclose(objFile);
 }
@@ -235,4 +252,66 @@ void Mesh::calculateNormalList(){
     }
 
     printf("%s\n", "Normals Calculated");
+}
+
+void Mesh::determineFileType(char * file_name){
+    FILE * objFile;
+    objFile = fopen(file_name, "r");
+    if(objFile == NULL){
+        perror("something happened");
+    }
+    char * line = (char *)calloc(0,128);
+    // char * line;
+    size_t something;
+
+    int v0, v1, v2;
+    int vn0, vn1, vn2;
+    int vt0, vt1, vt2;
+
+    while(1){
+
+        int res = getline(&line,&something,objFile);
+
+        if (res == -1){
+            break;
+        }
+
+        // Type : 0 = f 1 2 3 
+        int vars_set = sscanf(line,"f %d %d %d\n",&v0,&v1,&v2);
+
+        if(vars_set == 3){
+            FILE_TYPE = 0;
+            break;
+        }
+
+        // Type : 1 = f 1// 2// 3//
+        vars_set = sscanf(line,"f %d// %d// %d//\n",&v0,&v1,&v2);
+        if(vars_set == 3){  
+            FILE_TYPE = 1;
+            break;
+        }
+
+        // Type : 2 = f 1/1/ 2/2/ 3/3/ 
+        vars_set = sscanf(line,"f %d/%d/ %d/%d/ %d/%d/\n", &v0,&vt0,&v1,&vt1,&v2,&vt2);
+        if(vars_set == 6){
+            FILE_TYPE = 2;
+            break;
+        }
+
+        // Type : 3 = f 1//1 2//2 3//3
+        vars_set = sscanf(line,"f %d//%d %d//%d %d//%d\n", &v0,&vn0,&v1,&vn1,&v2,&vn2);
+        if(vars_set == 6){
+            FILE_TYPE = 3;
+            break;
+        }
+
+        // Type : 4 = f 1/1/1 2/2/2 3/3/3
+        vars_set = sscanf(line,"f %d/%d/%d %d/%d/%d %d/%d/%d\n", &v0,&vt0,&vn0,&v1,&vt1,&vn1,&v2,&vt2,&vn2); 
+        if(vars_set == 9){
+            FILE_TYPE = 4;
+            break;
+        }
+    }
+    free(line);
+    fclose(objFile);
 }
