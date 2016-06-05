@@ -37,6 +37,7 @@ Features
 + Fast Building of Orthonormal Basis
     * [Research paper](http://orbit.dtu.dk/files/57573287/onb_frisvad_jgt2012.pdf)
 + Smooth shaded triangles
++ Mesh reader for .obj files
     
 More To Come!
 =====
@@ -47,7 +48,6 @@ More To Come!
 - textures
    * texture mapping
    * procedural textures
-- updated .obj reader
 - scene language
 - SAH BVH method
 - bump mapping
