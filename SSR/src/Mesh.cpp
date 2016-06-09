@@ -66,17 +66,10 @@ void Mesh::trianglesToWorld(){
         myTriangle->face[0] = currentFace.i_0;
         myTriangle->face[1] = currentFace.i_1;
         myTriangle->face[2] = currentFace.i_2;
-
-        Microfacet * current_mat = new Microfacet();
-        current_mat->specular_brdf->roughnessValue = (0.15);
-        myTriangle->material_ptr = current_mat;
-        myTriangle->material_ptr->set_kd(0.75);
-        myTriangle->material_ptr->set_ka(0.0);
-        myTriangle->material_ptr->set_cd(RGBColor(1.00,0.86,0.57));
-        // myTriangle->material_ptr = new Matte();
-        // myTriangle->material_ptr->set_kd(1.0);
-        // myTriangle->material_ptr->set_ka(0.50);
-        // myTriangle->material_ptr->set_cd(this->color);
+        myTriangle->material_ptr = new Matte();
+        myTriangle->material_ptr->set_kd(1.0);
+        myTriangle->material_ptr->set_ka(0.50);
+        myTriangle->material_ptr->set_cd(this->color);
         triangle_ptrs.push_back(myTriangle);
         this->wptr->add_object(myTriangle);
     }
@@ -130,9 +123,14 @@ void Mesh::readObject(char * file_name){
 
 
             Vertex current_vertex;
+            // current_vertex.x = x;
+            // current_vertex.y = y;
+            // current_vertex.z = z;
+
+            // for dragon
             current_vertex.x = x;
-            current_vertex.y = y;
-            current_vertex.z = z;
+            current_vertex.y = z;
+            current_vertex.z = -y;
 
             vertices.push_back(current_vertex);
         }
@@ -172,14 +170,14 @@ void Mesh::readObject(char * file_name){
                 // Type : 1 = f 1// 2// 3//
                 vars_set = fscanf(objFile,"%d// %d// %d//\n",&v0,&v1,&v2);
             }else if(FILE_TYPE == 2){
-                // Type : 2 = f 1/1/ 2/2/ 3/3/ 
+                // Type : 2 = f 1/1/ 2/2/ 3/3/
                 vars_set = fscanf(objFile,"%d/%d/ %d/%d/ %d/%d/\n", &v0,&vt0,&v1,&vt1,&v2,&vt2);
             }else if(FILE_TYPE == 3){
                 // Type : 3 = f 1//1 2//2 3//3
                 vars_set = fscanf(objFile,"%d//%d %d//%d %d//%d\n", &v0,&vn0,&v1,&vn1,&v2,&vn2);
             }else if(FILE_TYPE == 3){
                 // Type : 4 = f 1/1/1 2/2/2 3/3/3
-                vars_set = fscanf(objFile,"%d/%d/%d %d/%d/%d %d/%d/%d\n", &v0,&vt0,&vn0,&v1,&vt1,&vn1,&v2,&vt2,&vn2);               
+                vars_set = fscanf(objFile,"%d/%d/%d %d/%d/%d %d/%d/%d\n", &v0,&vt0,&vn0,&v1,&vt1,&vn1,&v2,&vt2,&vn2);
 
             }
 
@@ -276,7 +274,7 @@ void Mesh::determineFileType(char * file_name){
             break;
         }
 
-        // Type : 0 = f 1 2 3 
+        // Type : 0 = f 1 2 3
         int vars_set = sscanf(line,"f %d %d %d\n",&v0,&v1,&v2);
 
         if(vars_set == 3){
@@ -286,12 +284,12 @@ void Mesh::determineFileType(char * file_name){
 
         // Type : 1 = f 1// 2// 3//
         vars_set = sscanf(line,"f %d// %d// %d//\n",&v0,&v1,&v2);
-        if(vars_set == 3){  
+        if(vars_set == 3){
             FILE_TYPE = 1;
             break;
         }
 
-        // Type : 2 = f 1/1/ 2/2/ 3/3/ 
+        // Type : 2 = f 1/1/ 2/2/ 3/3/
         vars_set = sscanf(line,"f %d/%d/ %d/%d/ %d/%d/\n", &v0,&vt0,&v1,&vt1,&v2,&vt2);
         if(vars_set == 6){
             FILE_TYPE = 2;
@@ -306,7 +304,7 @@ void Mesh::determineFileType(char * file_name){
         }
 
         // Type : 4 = f 1/1/1 2/2/2 3/3/3
-        vars_set = sscanf(line,"f %d/%d/%d %d/%d/%d %d/%d/%d\n", &v0,&vt0,&vn0,&v1,&vt1,&vn1,&v2,&vt2,&vn2); 
+        vars_set = sscanf(line,"f %d/%d/%d %d/%d/%d %d/%d/%d\n", &v0,&vt0,&vn0,&v1,&vt1,&vn1,&v2,&vt2,&vn2);
         if(vars_set == 9){
             FILE_TYPE = 4;
             break;

@@ -29,6 +29,7 @@
 #include "GlossyReflector.h"
 #include "Disk.h"
 #include "AmbientOccluder.h"
+#include "ThinLens.h"
 #include "stb_image_write.h"
 
 using std::cout;
@@ -46,15 +47,16 @@ World::World()
 */
 void World::build(void){
     // Sampler
-    int numberOfSamples = 1;
+    int numberOfSamples = 256;
     vp.sampler_ptr = new MultiJitter(numberOfSamples);
     vp.num_samples = vp.sampler_ptr->num_samples;
 
     // Camera
-    camera_ptr = new Pinhole;
-    camera_ptr->set_eye(0.0, 10.0, 25);
+    // camera_ptr = new Pinhole;
+    camera_ptr = new ThinLens;
+    camera_ptr->set_eye(0.0, 15, 45);
     camera_ptr->set_lookat(0.0,2.5,0.0);
-    camera_ptr->set_view_distance(350);
+    // camera_ptr->set_view_distance(1000);
     camera_ptr->compute_uvw();
 
     // Ray tracing method
@@ -88,7 +90,7 @@ void World::build(void){
     // Disk * d1 = new Disk(d1_c, d1_n, d1_r);
     // d1->material_ptr = emissive_ptr;
     // add_object(d1);
-    
+
     AreaLight * myAreaLight = new AreaLight();
     myAreaLight->obj_ptr = myRectangleTop;
     myAreaLight->material_ptr = emissive_ptr;
@@ -119,26 +121,25 @@ void World::build(void){
     s4->material_ptr->set_cd(RGBColor(0.95,0.64,0.54));
     // add_object(s4);
 
-    // size_t numberOfSpheres = 5;
-    // float radius = 3.5;
-    // float offset = radius*3;
-    // float initial_x = (numberOfSpheres-1)*offset/2;
-    // float step = 1/(float)numberOfSpheres;
-    // float totalSpheres = numberOfSpheres * numberOfSpheres;
-    // float totalStep = 1/totalSpheres;
-    // for (size_t i = 0; i < numberOfSpheres; i++) {
-    //     for (size_t j = 0; j < numberOfSpheres; j++) {
-    //         Vec4 current_position = Vec4(-initial_x+(offset*j),radius,(offset * i));
-    //         Sphere * current_sphere = new Sphere(current_position,radius);
-    //         Microfacet * current_mat = new Microfacet();
-    //         current_mat->specular_brdf->roughnessValue = ((i+j)*totalStep + totalStep);
-    //         current_sphere->material_ptr = current_mat;
-    //         current_sphere->material_ptr->set_kd(0.75);
-    //         current_sphere->material_ptr->set_ka(0.0);
-    //         current_sphere->material_ptr->set_cd(RGBColor((j*step)+step,(i*step)+step,0.2));
-    //         add_object(current_sphere);
-    //     }
-    // }
+    size_t numberOfSpheres = 5;
+    float radius = 3.5;
+    float offset = radius*3;
+    float initial_x = (numberOfSpheres-1)*offset/2;
+    float step = 1/(float)numberOfSpheres;
+    float totalSpheres = numberOfSpheres * numberOfSpheres;
+    float totalStep = 1/totalSpheres;
+    for (size_t i = 0; i < numberOfSpheres; i++) {
+        for (size_t j = 0; j < numberOfSpheres; j++) {
+            Vec4 current_position = Vec4(-initial_x+(offset*j),radius,(offset * i));
+            Sphere * current_sphere = new Sphere(current_position,radius);
+            Matte * current_mat = new Matte();
+            current_sphere->material_ptr = current_mat;
+            current_sphere->material_ptr->set_kd(0.80);
+            current_sphere->material_ptr->set_ka(0.5);
+            current_sphere->material_ptr->set_cd(RGBColor((j*step)+step,(i*step)+step,(j*step)+step));
+            add_object(current_sphere);
+        }
+    }
 
 
     // My cornell box
