@@ -38,10 +38,10 @@ Features
     * [Research paper](http://orbit.dtu.dk/files/57573287/onb_frisvad_jgt2012.pdf)
 + Smooth shaded triangles
 + Mesh reader for .obj files
++ Depth of field
     
 More To Come!
 =====
-- depth of field
 - non linear projections (fish eye)
 - refraction
 - instancing
