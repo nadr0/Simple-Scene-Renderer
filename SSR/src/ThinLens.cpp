@@ -5,7 +5,7 @@
 ThinLens::ThinLens(){
     lens_radius = 1.0;
     d = 350.0;
-    f = 34.5;
+    f = 50;
     zoom = 1.0;
     exposure_time = 1.0;
 

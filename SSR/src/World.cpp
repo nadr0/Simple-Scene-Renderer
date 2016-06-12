@@ -54,9 +54,9 @@ void World::build(void){
     // Camera
     // camera_ptr = new Pinhole;
     camera_ptr = new ThinLens;
-    camera_ptr->set_eye(0.0, 15, 45);
+    camera_ptr->set_eye(0.0, 15, 200);
     camera_ptr->set_lookat(0.0,2.5,0.0);
-    // camera_ptr->set_view_distance(1000);
+    // camera_ptr->set_view_distance(350);
     camera_ptr->compute_uvw();
 
     // Ray tracing method
@@ -78,11 +78,11 @@ void World::build(void){
     Vec4 r1_n = Vec4(0.0,-1.0,0.0);
 
     Emissive * emissive_ptr = new Emissive();
-    emissive_ptr->ls = 1.0;// 2.0
+    emissive_ptr->ls = 1.5;// 2.0
 
     Rectangle * myRectangleTop = new Rectangle(r1_p,r1_a,r1_b,r1_n);
     myRectangleTop->material_ptr = emissive_ptr;
-    add_object(myRectangleTop);
+    // add_object(myRectangleTop);
     //
     // Vec4 d1_c = Vec4(0.0,25.0,12.5);
     // Vec4 d1_n = Vec4(0.0,-1.0,0.0);
@@ -94,8 +94,9 @@ void World::build(void){
     AreaLight * myAreaLight = new AreaLight();
     myAreaLight->obj_ptr = myRectangleTop;
     myAreaLight->material_ptr = emissive_ptr;
-    add_light(myAreaLight);
+    // add_light(myAreaLight);
 
+    // Ambient Occlusion
     MultiJitter * sampler_ptr = new MultiJitter(256);
     AmbientOccluder * myLight = new AmbientOccluder();
     myLight->ls = 1.0;
@@ -115,13 +116,13 @@ void World::build(void){
     // Left sphere.
     Vec4 s4_c = Vec4(-7.5,3.5,12.5);
     Sphere * s4 = new Sphere(s4_c,3.5);
-    s4->material_ptr = new Matte();
+    s4->material_ptr = new Phong();
     s4->material_ptr->set_kd(1.0);
     s4->material_ptr->set_ka(0.25);
     s4->material_ptr->set_cd(RGBColor(0.95,0.64,0.54));
     // add_object(s4);
 
-    size_t numberOfSpheres = 5;
+    size_t numberOfSpheres = 20;
     float radius = 3.5;
     float offset = radius*3;
     float initial_x = (numberOfSpheres-1)*offset/2;
@@ -132,7 +133,7 @@ void World::build(void){
         for (size_t j = 0; j < numberOfSpheres; j++) {
             Vec4 current_position = Vec4(-initial_x+(offset*j),radius,(offset * i));
             Sphere * current_sphere = new Sphere(current_position,radius);
-            Matte * current_mat = new Matte();
+            Phong * current_mat = new Phong();
             current_sphere->material_ptr = current_mat;
             current_sphere->material_ptr->set_kd(0.80);
             current_sphere->material_ptr->set_ka(0.5);
@@ -145,9 +146,9 @@ void World::build(void){
     // My cornell box
 
     // Floor.
-    Vec4 floor_p = Vec4(-50.0,0.0,-50.0);
-    Vec4 floor_a = Vec4(0.0,0.0,100.0);
-    Vec4 floor_b = Vec4(100.0,0.0,0.0);
+    Vec4 floor_p = Vec4(-250.0,0.0,-250.0);
+    Vec4 floor_a = Vec4(0.0,0.0,500.0);
+    Vec4 floor_b = Vec4(500.0,0.0,0.0);
     Vec4 floor_n = Vec4(0.0,1.0,0.0);
 
     Rectangle * FLOOR = new Rectangle(floor_p,floor_a,floor_b,floor_n);

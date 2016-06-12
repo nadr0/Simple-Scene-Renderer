@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "Camera.h"
 #include "Pinhole.h"
 #include "Viewplane.h"
@@ -23,6 +24,7 @@ void Pinhole::render_scene(World & w){
     float y;
 
     ray.o = eye;
+
     for(int r = 0; r < vp.vres; r++){
         for(int c = 0; c < vp.hres; c++){
             pixel_color = RGBColor(0.0,0.0,0.0);
